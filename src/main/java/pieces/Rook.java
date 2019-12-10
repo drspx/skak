@@ -3,21 +3,18 @@ package pieces;
 import board.Board;
 import board.BoardUtils;
 import board.Move;
-import board.Move.AttackMove;
-import board.Move.MajorMove;
 import board.Tile;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Bishop extends Piece {
+public class Rook extends Piece {
 
-    private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-7, -9, 7, 9 };
+    private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-1, -8, 1, 8 };
 
-    Bishop(int piecePosition, Alliance pieceAlliance) {
+    Rook(int piecePosition, Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
     }
 
@@ -36,12 +33,12 @@ public class Bishop extends Piece {
                 if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
                     final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                     if (!candidateDestinationTile.isTileOccupied()){
-                        legalMoves.add(new MajorMove(board,this,candidateDestinationCoordinate));
+                        legalMoves.add(new Move.MajorMove(board,this,candidateDestinationCoordinate));
                     } else{
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         final Alliance pieceAlliance = pieceAtDestination.getPieceAllience();
                         if (this.PieceAllience != pieceAlliance){
-                            legalMoves.add(new AttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
+                            legalMoves.add(new Move.AttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
                         }
                         break;
                     }
@@ -51,9 +48,9 @@ public class Bishop extends Piece {
         return ImmutableList.copyOf(legalMoves);
     }
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset){
-        return BoardUtils.FIRST_COLUMN[currentPosition] && candidateOffset==-9 || candidateOffset==7;
+        return BoardUtils.FIRST_COLUMN[currentPosition] && candidateOffset==-1 ;
     }
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffset){
-        return BoardUtils.EIGTH_COLUMN[currentPosition] && candidateOffset==-7 || candidateOffset==9;
+        return BoardUtils.EIGTH_COLUMN[currentPosition] && candidateOffset==1;
     }
 }
