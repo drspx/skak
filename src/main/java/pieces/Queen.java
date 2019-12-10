@@ -12,14 +12,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Bishop extends Piece {
+public class Queen extends Piece{
 
-    private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-7, -9, 7, 9 };
+    private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9,-8,-7,-1,1,7,8,9 };
 
-    Bishop(int piecePosition, Alliance pieceAlliance) {
+    Queen(int piecePosition, Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
     }
-
     @Override
     public Collection<Move> calculateLegalMoves(final Board board) {
 
@@ -50,9 +49,9 @@ public class Bishop extends Piece {
         return ImmutableList.copyOf(legalMoves);
     }
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset){
-        return BoardUtils.FIRST_COLUMN[currentPosition] && candidateOffset==-9 || candidateOffset==7;
+        return BoardUtils.FIRST_COLUMN[currentPosition] && candidateOffset == -1 ||candidateOffset==-9 || candidateOffset==7;
     }
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffset){
-        return BoardUtils.EIGTH_COLUMN[currentPosition] && candidateOffset==-7 || candidateOffset==9;
+        return BoardUtils.EIGTH_COLUMN[currentPosition] && candidateOffset==-7 || candidateOffset == 1 || candidateOffset==9;
     }
 }
