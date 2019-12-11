@@ -18,6 +18,10 @@ public abstract class Piece {
         this.isFirstMove=false;
     }
 
+    public int getPiecePosition() {
+        return piecePosition;
+    }
+
     public abstract Collection<Move> calculateLegalMoves(final Board board);
 
     public boolean isFirstMove() {
