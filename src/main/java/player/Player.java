@@ -55,7 +55,7 @@ public abstract class Player {
     }
 
     public boolean isCheckMate(){
-        return this.isInCheck && !hasEscapeMoves();
+        return this.isInCheck && !(hasEscapeMoves());
     }
 
     protected boolean hasEscapeMoves() {
@@ -78,7 +78,26 @@ public abstract class Player {
     }
 
     public MoveTransition makeMove(final Move move){
-        return null;
+
+        if (!isMoveLegal(move)){
+            return new MoveTransition(this.board, move, MoveStatus.ILLEGAL_MOVE);
+        }
+        final Board transitionBoard = move.execute();
+        final Collection<Move> kingAttacks = Player.calculateAttacksOnTile(transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
+                transitionBoard.currentPlayer().getLegalMoves());
+        if (!kingAttacks.isEmpty()){
+            return new MoveTransition(this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
+        }
+
+        return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
+    }
+
+    private Collection<Move> getLegalMoves() {
+        return this.legalMoves;
+    }
+
+    public Piece getPlayerKing() {
+        return this.playerKing;
     }
 
     public abstract Collection<Piece> getActivePieces();
