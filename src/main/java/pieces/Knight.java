@@ -17,7 +17,7 @@ public class Knight extends Piece {
     private final static int[] CANDIDATE_MOVE_COORDINATES = {-17,-15,-10,-6,6,10,15,17};
 
     public Knight(final int piecePosition, final Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance);
+        super(PieceType.KNIGHT,piecePosition, pieceAlliance);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Knight extends Piece {
                     legalMoves.add(new MajorMove(board,this,candidateDestinationCoordinate));
                 } else{
                     final Piece pieceAtDestination = candidateDestinationTile.getPiece();
-                    final Alliance pieceAlliance = pieceAtDestination.getPieceAllience();
+                    final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                     if (this.PieceAllience != pieceAlliance){
                         legalMoves.add(new AttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
                     }
