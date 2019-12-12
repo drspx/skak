@@ -5,12 +5,12 @@ import pieces.Piece;
 public abstract class Move {
 
     final Board board;
-    final Piece movedpiece;
+    final Piece movedPiece;
     final int destinationCoordinate;
 
     private Move(final Board board, Piece movedPiece, int destinationCoordinate){
         this.board=board;
-        this.movedpiece=movedPiece;
+        this.movedPiece =movedPiece;
         this.destinationCoordinate=destinationCoordinate;
     }
 
@@ -40,7 +40,21 @@ public abstract class Move {
 
         @Override
         public Board execute() {
-            return null;
+            final Board.Builder builder = new Board.Builder();
+            for (final Piece piece : this.board.currentPlayer().getActivePieces()){
+                //TODO hashcode and equals for pieces
+                if (!this.movedPiece.equals(piece)){
+                    builder.setPiece(piece);
+                }
+            }
+            for (final Piece piece : this.board.currentPlayer().getOpponent().getActivePieces()){
+                builder.setPiece(piece);
+            }
+            //TODO move the moved piece
+            builder.setPiece(null);
+            builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
+
+            return builder.build();
         }
     }
 
