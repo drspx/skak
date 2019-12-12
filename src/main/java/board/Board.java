@@ -3,6 +3,7 @@ package board;
 import com.google.common.collect.ImmutableList;
 import pieces.*;
 import player.BlackPlayer;
+import player.Player;
 import player.WhitePlayer;
 
 import java.util.*;
@@ -121,6 +122,13 @@ public class Board {
     }
     public Collection<Piece> getWhitePieces() {
         return this.whitePieces;
+    }
+
+    public Player whitePlayer() {
+        return this.whitePlayer;
+    }
+    public Player blackPlayer() {
+        return this.blackPlayer;
     }
 
     public static class Builder {

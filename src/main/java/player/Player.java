@@ -2,6 +2,7 @@ package player;
 
 import board.Board;
 import board.Move;
+import pieces.Alliance;
 import pieces.King;
 import pieces.Piece;
 
@@ -29,6 +30,28 @@ public abstract class Player {
         throw new RuntimeException("should not reach here ! not a valid board");
     }
 
+    public boolean isMoveLegal(final Move move){
+        return this.legalMoves.contains(move);
+    }
+    //TODO implement methods
+    public boolean isInCheck(){
+        return false;
+    }
+    public boolean isCheckMate(){
+        return false;
+    }
+    public boolean isInStaleMate(){
+        return false;
+    }
+    public boolean isCastled(){
+        return false;
+    }
+    public MoveTransition makeMove(final Move move){
+        return null;
+    }
+
     public abstract Collection<Piece> getActivePieces();
+    public abstract Alliance getAlliance();
+    public abstract Player getOpponent();
 
 }
