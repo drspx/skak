@@ -40,7 +40,7 @@ public class King extends Piece{
                 } else{
                     final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
-                    if (this.PieceAllience != pieceAlliance){
+                    if (this.pieceAlliance != pieceAlliance){
                         legalMoves.add(new AttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
                     }
                 }
@@ -48,6 +48,11 @@ public class King extends Piece{
         }
 
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public King movePiece(Move move) {
+        return new King(move.getDestinationCoordinate(),move.getMovedPiece().getPieceAlliance());
     }
 
     @Override

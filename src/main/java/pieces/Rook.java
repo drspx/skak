@@ -37,7 +37,7 @@ public class Rook extends Piece {
                     } else{
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
-                        if (this.PieceAllience != pieceAlliance){
+                        if (this.pieceAlliance != pieceAlliance){
                             legalMoves.add(new Move.AttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
                         }
                         break;
@@ -46,6 +46,11 @@ public class Rook extends Piece {
             }
         }
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public Rook movePiece(Move move) {
+        return new Rook(move.getDestinationCoordinate(),move.getMovedPiece().getPieceAlliance());
     }
     @Override
     public String toString() {

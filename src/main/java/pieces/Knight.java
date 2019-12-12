@@ -40,7 +40,7 @@ public class Knight extends Piece {
                 } else{
                     final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
-                    if (this.PieceAllience != pieceAlliance){
+                    if (this.pieceAlliance != pieceAlliance){
                         legalMoves.add(new AttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
                     }
                 }
@@ -48,6 +48,12 @@ public class Knight extends Piece {
         }
         return ImmutableList.copyOf(legalMoves);
     }
+
+    @Override
+    public Knight movePiece(Move move) {
+        return new Knight(move.getDestinationCoordinate(),move.getMovedPiece().getPieceAlliance());
+    }
+
     @Override
     public String toString() {
         return PieceType.KNIGHT.toString();
