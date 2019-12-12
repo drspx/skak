@@ -2,23 +2,40 @@ package player;
 
 import board.Board;
 import board.Move;
+import com.google.common.collect.ImmutableList;
 import pieces.Alliance;
 import pieces.King;
 import pieces.Piece;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public abstract class Player {
+
     protected final Board board;
     protected final King playerKing;
     protected final Collection<Move> legalMoves;
+    private final boolean isInCheck;
 
     Player(final Board board,
            final Collection<Move> legalMoves,
            final Collection<Move> opponentMoves){
+
         this.board=board;
         this.playerKing=establishKing();
         this.legalMoves=legalMoves;
+        this.isInCheck=!Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty();
+    }
+
+    private static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
+        final List<Move> attackMoves = new ArrayList<>();
+        for (final Move move :moves) {
+            if (piecePosition == move.getDestinationCoordinate()){
+                attackMoves.add(move);
+            }
+        }
+        return ImmutableList.copyOf(attackMoves);
     }
 
     private King establishKing() {
@@ -33,19 +50,33 @@ public abstract class Player {
     public boolean isMoveLegal(final Move move){
         return this.legalMoves.contains(move);
     }
-    //TODO implement methods
     public boolean isInCheck(){
-        return false;
+        return this.isInCheck;
     }
+
     public boolean isCheckMate(){
+        return this.isInCheck && !hasEscapeMoves();
+    }
+
+    protected boolean hasEscapeMoves() {
+        for (final Move move :
+                this.legalMoves) {
+            final MoveTransition transition = makeMove(move);
+            if (transition.getMoveStatus().isDone()){
+                return true;
+            }
+        }
         return false;
     }
+
     public boolean isInStaleMate(){
-        return false;
+        return !this.isInCheck && !hasEscapeMoves();
     }
+
     public boolean isCastled(){
         return false;
     }
+
     public MoveTransition makeMove(final Move move){
         return null;
     }
