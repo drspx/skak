@@ -2,23 +2,36 @@ package gui;
 
 import engine.board.Board;
 import engine.board.BoardUtils;
+import engine.board.Move;
+import engine.board.Tile;
+import engine.pieces.Piece;
+import engine.player.MoveTransition;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.swing.SwingUtilities.isLeftMouseButton;
+import static javax.swing.SwingUtilities.isRightMouseButton;
+
 public class Table {
 
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
-    private final Board chessBoard;
+    private Board chessBoard;
+
+    private Tile sourceTile;
+    private Tile destinationTile;
+    private Piece humanMovedPiece;
 
     private final Color lightTileColor = Color.decode("#FFFACD");
     private final Color darkTileColor = Color.decode("#593E1A");
@@ -84,28 +97,104 @@ public class Table {
         }
 
 
+        public void drawBoard(Board board) {
+            removeAll();
+            for (final TilePanel tilePanel : boardTiles) {
+                tilePanel.drawTile(board);
+                add(tilePanel);
+            }
+            validate();
+            repaint();
+        }
     }
     private class TilePanel extends JPanel{
-        private final int tilId;
-        TilePanel(final BoardPanel boardPanel, final int tilId){
+        private final int tileId;
+        TilePanel(final BoardPanel boardPanel, final int tileId){
             super(new GridBagLayout());
-            this.tilId = tilId;
+            this.tileId = tileId;
             setPreferredSize(TILE_PANEL_DIMENSION);
             assignTileColor();
             assignTilePieceIcon(chessBoard);
+
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(final MouseEvent mouseEvent) {
+                    System.out.println(chessBoard.toString());
+                    if (isRightMouseButton(mouseEvent)) {
+                        sourceTile = null;
+                        humanMovedPiece = null;
+                        destinationTile = null;
+
+                    } else if (isLeftMouseButton(mouseEvent)) {
+                        if (sourceTile == null) {
+                            sourceTile = chessBoard.getTile(tileId);
+                            humanMovedPiece = sourceTile.getPiece();
+                            if (humanMovedPiece == null) {
+                                sourceTile = null;
+                            }
+                        } else {
+                            destinationTile=chessBoard.getTile(tileId);
+                            final Move move = Move.MoveFactory.createMove(chessBoard,sourceTile.getTileCoordinate(),destinationTile.getTileCoordinate());
+                            final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+                            if (transition.getMoveStatus().isDone()){
+                                chessBoard = transition.getTransitionBoard();
+                                //TODO add move to move log
+                            }
+                            sourceTile = null;
+                            humanMovedPiece = null;
+                            destinationTile = null;
+                        }
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                boardPanel.drawBoard(chessBoard);
+                            }
+                        });
+                    }
+                }
+
+
+                @Override
+                public void mousePressed(final MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseReleased(final MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseEntered(final MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseExited(final MouseEvent mouseEvent) {
+
+                }
+            });
             validate();
 
         }
 
+        public void drawTile(final Board board){
+            assignTileColor();
+            assignTilePieceIcon(board);
+            validate();
+            repaint();
+        }
+
         private void assignTilePieceIcon(final Board board){
             this.removeAll();
-            if (board.getTile(this.tilId).isTileOccupied()){
-                //String pieceIconPath = "/home/alexander/git/BlackWidow-Chess/art/holywarriors/";
+            if (board.getTile(this.tileId).isTileOccupied()){
+
                 String pieceIconPath = HOLY_WARRIORS;
+
                 try {
                     final BufferedImage image = ImageIO.read(new File(new File(new File(pieceIconPath
-                            + board.getTile(this.tilId).getPiece().getPieceAlliance().toString().substring(0, 1))
-                            + board.getTile(this.tilId).getPiece().toString())
+                            + board.getTile(this.tileId).getPiece().getPieceAlliance().toString().substring(0, 1))
+                            + board.getTile(this.tileId).getPiece().toString())
                             + ".gif"));
                     this.add(new JLabel(new ImageIcon(image)));
                 } catch (IOException e) {
@@ -115,16 +204,16 @@ public class Table {
         }
 
         private void assignTileColor() {
-            if (BoardUtils.EIGTH_RANK[this.tilId]||
-                BoardUtils.SIXTH_RANK[this.tilId]||
-                BoardUtils.FOURTH_RANK[this.tilId]||
-                BoardUtils.SECOND_RANK[this.tilId]){
-                setBackground(this.tilId%2==0 ? lightTileColor : darkTileColor);
-            } else if (BoardUtils.SEVENTH_RANK[this.tilId]||
-                        BoardUtils.FIFTH_RANK[this.tilId]||
-                        BoardUtils.THIRD_RANK[this.tilId]||
-                        BoardUtils.FIRST_RANK[this.tilId]){
-                setBackground(this.tilId%2!=0 ? lightTileColor : darkTileColor);
+            if (BoardUtils.EIGTH_RANK[this.tileId]||
+                    BoardUtils.SIXTH_RANK[this.tileId]||
+                    BoardUtils.FOURTH_RANK[this.tileId]||
+                    BoardUtils.SECOND_RANK[this.tileId]){
+                setBackground(this.tileId %2==0 ? lightTileColor : darkTileColor);
+            } else if (BoardUtils.SEVENTH_RANK[this.tileId]||
+                    BoardUtils.FIFTH_RANK[this.tileId]||
+                    BoardUtils.THIRD_RANK[this.tileId]||
+                    BoardUtils.FIRST_RANK[this.tileId]){
+                setBackground(this.tileId %2!=0 ? lightTileColor : darkTileColor);
             }
         }
     }

@@ -9,5 +9,8 @@
         <module name="untitledNN" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="untitledNN" target="7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
