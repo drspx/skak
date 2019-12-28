@@ -37,6 +37,8 @@ public class Table {
     private Piece humanMovedPiece;
     private BoardDirection boardDirection;
 
+    private boolean highlightLegalMoves=true;
+
     private final Color lightTileColor = Color.decode("#FFFACD");
     private final Color darkTileColor = Color.decode("#593E1A");
 
@@ -69,7 +71,7 @@ public class Table {
     }
 
     private JMenu createPreferencesMenu() {
-        final JMenu fileMenu = new JMenu("Preferences");
+        final JMenu preferencesMenu = new JMenu("Preferences");
         final JMenuItem flipBoardMenuItem = new JMenuItem("Flip board");
         flipBoardMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -79,8 +81,17 @@ public class Table {
                 boardPanel.drawBoard(chessBoard);
             }
         });
-        fileMenu.add(flipBoardMenuItem);
-        return fileMenu;
+        preferencesMenu.add(flipBoardMenuItem);
+        preferencesMenu.addSeparator();
+        final JCheckBoxMenuItem legalMovesHighlighterCheckBox = new JCheckBoxMenuItem("highlight legal moves",true);
+        legalMovesHighlighterCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                highlightLegalMoves = legalMovesHighlighterCheckBox.isSelected();
+            }
+        });
+        preferencesMenu.add(legalMovesHighlighterCheckBox);
+        return preferencesMenu;
     }
 
 
@@ -256,7 +267,7 @@ public class Table {
 
 
         private void highlightLegals(final Board board){
-            if (true){
+            if (highlightLegalMoves){
                 for (final Move move : pieceLegalMoves(board)) {
                     if (move.getDestinationCoordinate() == this.tileId){
                         try {

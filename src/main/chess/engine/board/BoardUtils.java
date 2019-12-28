@@ -1,5 +1,8 @@
 package engine.board;
 
+import java.awt.datatransfer.MimeTypeParameterList;
+import java.util.Map;
+
 public class BoardUtils {
 
     public static final boolean[] FIRST_COLUMN = initColumn(0);
@@ -15,6 +18,9 @@ public class BoardUtils {
     public static final boolean[] THIRD_RANK = initRow(40);
     public static final boolean[] SECOND_RANK = initRow(48);
     public static final boolean[] FIRST_RANK = initRow(56);
+
+    private static final String[] ALGEBREIC_NOTATION = initializeAlgebreicNotation();
+    private static final Map<String,Integer> POSITION_TO_COORDINATE = initializePositionToCoordinateMap();
 
 
     private static boolean[] initRow(int rowNumber) {
@@ -48,4 +54,11 @@ public class BoardUtils {
         return coordinate>=0 && coordinate<NUM_TILES;
     }
 
+    public static int getCoordinateAtPosition(final string position){
+        return POSITION_TO_COORDINATE.get(position);
+    }
+
+    public static String getPositionAtCoordinate(final int coordinate) {
+        return ALGEBREIC_NOTATION[coordinate];
+    }
 }
