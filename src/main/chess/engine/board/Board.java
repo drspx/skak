@@ -49,7 +49,13 @@ public class Board {
 
     private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
         final List<Move> legalMoves = new ArrayList<>();
+
         for (final Piece piece : pieces) {
+            System.out.print(piece.toString());
+        }
+
+            for (final Piece piece : pieces) {
+            System.out.println("calculating .. " + piece.toString() + " " + piece.getPieceAlliance().toString());
             legalMoves.addAll(piece.calculateLegalMoves(this));
         }
         return ImmutableList.copyOf(legalMoves);
