@@ -21,6 +21,14 @@ public class BoardUtils {
     private static final String[] ALGEBREIC_NOTATION = initializeAlgebreicNotation();
     private static final Map<String,Integer> POSITION_TO_COORDINATE = initializePositionToCoordinateMap();
 
+    private static String[] initializeAlgebreicNotation() {
+        return new String[0];
+    }
+
+    private static Map<String, Integer> initializePositionToCoordinateMap() {
+        return null;
+    }
+
 
     private static boolean[] initRow(int rowNumber) {
         final boolean[] row = new boolean[NUM_TILES];
@@ -53,7 +61,7 @@ public class BoardUtils {
         return coordinate>=0 && coordinate<NUM_TILES;
     }
 
-    public static int getCoordinateAtPosition(final string position){
+    public static int getCoordinateAtPosition(final String position){
         return POSITION_TO_COORDINATE.get(position);
     }
 

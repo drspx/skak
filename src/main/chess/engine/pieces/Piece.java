@@ -73,6 +73,10 @@ public abstract class Piece {
 
     public abstract Piece movePiece(Move move);
 
+    public int getPieceValue() {
+        return this.pieceType.pieceValue();
+    }
+
 
     public enum PieceType {
 

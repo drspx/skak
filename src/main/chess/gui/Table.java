@@ -45,7 +45,7 @@ public class Table {
     private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
     private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
     private static final Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
-    private static final String HOLY_WARRIORS = "art/holywarriors/";
+    public static final String HOLY_WARRIORS = "art/holywarriors/";
     private static final String GREEN_DOT = "art/green_dot.png";
 
 
@@ -169,6 +169,36 @@ public class Table {
             repaint();
         }
     }
+
+    public static class MoveLog {
+        private final List<Move> moves;
+
+        public MoveLog() {
+            moves = new ArrayList<>();
+        }
+
+        public List<Move> getMoves() {
+            return moves;
+        }
+        public void addMove(final Move move){
+            this.moves.add(move);
+        }
+        public int size(){
+            return this.moves.size();
+        }
+        public void clear(){
+            this.moves.clear();
+        }
+        public Move removeMove(int i){
+            return this.moves.remove(i);
+        }
+        public boolean removeMove(final Move move){
+            return this.moves.remove(move);
+        }
+
+    }
+
+
     private class TilePanel extends JPanel{
         private final int tileId;
         TilePanel(final BoardPanel boardPanel, final int tileId){
