@@ -31,8 +31,6 @@ public class Pawn extends Piece {
         for (final int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES) {
             final int candidateDestinationCoordinate = this.piecePosition + (this.getPieceAlliance().getDirection() * currentCandidateOffset);
 
-            System.out.println(candidateDestinationCoordinate);
-
             if (!BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                 continue;
             }

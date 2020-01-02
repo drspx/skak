@@ -22,7 +22,7 @@ public class Queen extends Piece{
     }
 
     public Queen(final int piecePosition, final Alliance pieceAlliance,final boolean isFirstMove) {
-        super(PieceType.QUEEN,piecePosition, pieceAlliance,isFirstMove);
+        super(PieceType.QUEEN, piecePosition, pieceAlliance,isFirstMove);
     }
 
     @Override
@@ -31,17 +31,19 @@ public class Queen extends Piece{
         final List<Move> legalMoves = new ArrayList<>();
         for (final int candidateCoordinateOffset: CANDIDATE_MOVE_VECTOR_COORDINATES) {
             int candidateDestinationCoordinate = this.piecePosition;
-            while (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
-                if (isFirstColumnExclusion(candidateDestinationCoordinate,candidateCoordinateOffset)||
+            while (true){
+                if (    isFirstColumnExclusion(candidateDestinationCoordinate,candidateCoordinateOffset) ||
                         isEigthColumnExclusion(candidateDestinationCoordinate,candidateCoordinateOffset)){
                     break;
                 }
                 candidateDestinationCoordinate+=candidateCoordinateOffset;
-                if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
+                if (!BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
+                    break;
+                } else {
                     final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                     if (!candidateDestinationTile.isTileOccupied()){
                         legalMoves.add(new MajorMove(board,this,candidateDestinationCoordinate));
-                    } else{
+                    } else {
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                         if (this.pieceAlliance != pieceAlliance){
