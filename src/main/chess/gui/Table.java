@@ -29,7 +29,11 @@ import static javax.swing.SwingUtilities.isRightMouseButton;
 public class Table {
 
     private final JFrame gameFrame;
+    private final GameHistoryPanel gameHistoryPanel;
+    private final TakenPiecesPanel takenPiecesPanel;
     private final BoardPanel boardPanel;
+    private final MoveLog moveLog;
+
     private Board chessBoard;
 
     private Tile sourceTile;
@@ -56,9 +60,17 @@ public class Table {
         this.gameFrame.setJMenuBar(tableMenuBar);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.chessBoard = Board.crateStandardBoard();
+        this.gameHistoryPanel = new GameHistoryPanel();
+        this.takenPiecesPanel = new TakenPiecesPanel();
+
         this.boardPanel = new BoardPanel();
+        this.moveLog = new MoveLog();
+
         this.boardDirection = BoardDirection.NORMAL;
+
+        this.gameFrame.add(this.takenPiecesPanel,BorderLayout.WEST);
         this.gameFrame.add(boardPanel, BorderLayout.CENTER);
+        this.gameFrame.add(this.gameHistoryPanel,BorderLayout.EAST);
         this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.gameFrame.setVisible(true);
     }
@@ -229,7 +241,7 @@ public class Table {
                             final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                             if (transition.getMoveStatus().isDone()){
                                 chessBoard = transition.getTransitionBoard();
-                                //TODO add move to move log
+                                moveLog.addMove(move);
                             }
                             sourceTile = null;
                             humanMovedPiece = null;
@@ -238,6 +250,8 @@ public class Table {
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
+                                gameHistoryPanel.redo(chessBoard,moveLog);
+                                takenPiecesPanel.redo(moveLog);
                                 boardPanel.drawBoard(chessBoard);
                             }
                         });

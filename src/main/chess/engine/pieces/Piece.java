@@ -48,7 +48,7 @@ public abstract class Piece {
 
     @Override
     public int hashCode() {
-        return this.hashCode();
+        return this.cachedHashCode;
     }
 
     public PieceType getPieceType() {

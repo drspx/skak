@@ -41,9 +41,12 @@ public class GameHistoryPanel extends JPanel {
         }
         if (moveLog.getMoves().size()>0){
             final Move lastMove = moveLog.getMoves().get(moveLog.size()-1);
-            final String lastText = lastMove.toString();
+            final String moveText = lastMove.toString();
+
             if (lastMove.getMovedPiece().getPieceAlliance().isBlack()){
-                this.model.setValueAt(lastText+calculateCheckAndCheckMateHash(board),currentRow-1,1);
+                this.model.setValueAt(moveText+calculateCheckAndCheckMateHash(board),currentRow,0);
+            } else if (lastMove.getMovedPiece().getPieceAlliance().isBlack()){
+                this.model.setValueAt(moveText+calculateCheckAndCheckMateHash(board),currentRow-1,1);
             }
         }
         final JScrollBar vertical = scrollPane.getVerticalScrollBar();
@@ -65,9 +68,10 @@ public class GameHistoryPanel extends JPanel {
         private final List<Row> values;
         private static final String[] NAMES = {"White","Black"};
 
-        public DataModel(){
+        public DataModel() {
             this.values=new ArrayList<>();
         }
+
         public void clear(){
             this.values.clear();
             setRowCount(0);
@@ -75,7 +79,7 @@ public class GameHistoryPanel extends JPanel {
 
         @Override
         public int getRowCount() {
-            if (this==null){
+            if (this.values==null){
                 return 0;
             }
             return this.values.size();
@@ -108,9 +112,9 @@ public class GameHistoryPanel extends JPanel {
             } else {
                 currentRow = this.values.get(row);
             }
-
             if (column==0){
                 currentRow.setWhiteMove((String) aValue);
+                fireTableRowsInserted(row,row);
             } else if (column==1){
                 currentRow.setBlackMove((String) aValue);
                 fireTableRowsUpdated(row,column);
@@ -132,7 +136,6 @@ public class GameHistoryPanel extends JPanel {
         private String whiteMove;
         private String blackMove;
         Row(){
-
         }
         public String getWhiteMove() {
             return whiteMove;

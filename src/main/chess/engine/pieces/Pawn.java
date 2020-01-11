@@ -4,11 +4,10 @@ import engine.Alliance;
 import engine.board.Board;
 import engine.board.BoardUtils;
 import engine.board.Move;
-import engine.board.Move.AttackMove;
-import engine.board.Move.MajorMove;
 import com.google.common.collect.ImmutableList;
 import engine.board.Move.PawnAttackMove;
 import engine.board.Move.PawnJump;
+import engine.board.Move.PawnMove;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +36,7 @@ public class Pawn extends Piece {
 
             if (currentCandidateOffset == 8 && !board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
                 //TODO deal with promotions
-                legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                legalMoves.add(new PawnMove(board, this, candidateDestinationCoordinate));
             } else if ( (currentCandidateOffset == 16 && this.isFirstMove() ) &&
                     ((BoardUtils.SEVENTH_RANK[this.piecePosition] && this.getPieceAlliance().isBlack()) ||
                     (BoardUtils.SECOND_RANK[this.piecePosition] && this.getPieceAlliance().isWhite())) ) {

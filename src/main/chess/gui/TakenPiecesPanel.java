@@ -70,34 +70,26 @@ public class TakenPiecesPanel extends JPanel {
                 return Ints.compare(p1.getPieceValue(),p2.getPieceValue());
             }
         });
-        for (final Piece takenPiece : whiteTakenPieces){
-            try {
-                final BufferedImage image = ImageIO.read(new File(new File(Table.HOLY_WARRIORS
-                        + takenPiece.getPieceAlliance().toString().substring(0, 1))
-                        + "" + takenPiece.toString()));
-                final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLabel = new JLabel();
-                this.southPanel.add(imageLabel);
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
+        takenPieces(whiteTakenPieces);
 
-        }
-
-        for (final Piece takenPiece : blackTakenPieces){
-            try {
-                final BufferedImage image = ImageIO.read(new File(new File(Table.HOLY_WARRIORS
-                        + takenPiece.getPieceAlliance().toString().substring(0, 1))
-                        + "" + takenPiece.toString()));
-                final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLabel = new JLabel();
-                this.southPanel.add(imageLabel);
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+        takenPieces(blackTakenPieces);
 
         validate();
+    }
+
+    private void takenPieces(List<Piece> takenPieces) {
+        for (final Piece takenPiece : takenPieces){
+            try {
+                final BufferedImage image = ImageIO.read(new File(new File(Table.HOLY_WARRIORS
+                        + takenPiece.getPieceAlliance().toString().substring(0, 1))
+                        + "" + takenPiece.toString()));
+                final ImageIcon icon = new ImageIcon(image);
+                final JLabel imageLabel = new JLabel();
+                this.southPanel.add(imageLabel);
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }

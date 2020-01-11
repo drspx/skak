@@ -1,5 +1,7 @@
 package engine.board;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.util.*;
 
 public class BoardUtils {
@@ -39,7 +41,7 @@ public class BoardUtils {
         for (int i = START_TILE_INDEX; i < NUM_TILES; i++) {
             positionToCoordinate.put(ALGEBRAIC_NOTATION.get(i), i);
         }
-        return Collections.unmodifiableMap(positionToCoordinate);
+        return ImmutableMap.copyOf(positionToCoordinate);
     }
 
 
