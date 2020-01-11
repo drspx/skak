@@ -43,7 +43,7 @@ public class BoardUtils {
         }
         return ImmutableMap.copyOf(positionToCoordinate);
     }
-
+ 
 
     private static boolean[] initRow(int rowNumber) {
         final boolean[] row = new boolean[NUM_TILES];
