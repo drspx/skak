@@ -134,9 +134,6 @@ public abstract class Move {
             super(board, movedPiece, destinationCoordinate);
             this.attackedPiece = attackedPiece;
         }
-        public Piece attackediece() {
-            return attackedPiece;
-        }
 
         @Override
         public int hashCode() {

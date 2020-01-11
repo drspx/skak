@@ -4,6 +4,8 @@ import engine.Alliance;
 import engine.board.Board;
 import engine.board.BoardUtils;
 import engine.board.Move;
+import engine.board.Move.MajorAttackMove;
+import engine.board.Move.MajorMove;
 import engine.board.Tile;
 import com.google.common.collect.ImmutableList;
 
@@ -37,12 +39,12 @@ public class Rook extends Piece {
                 if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
                     final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                     if (!candidateDestinationTile.isTileOccupied()){
-                        legalMoves.add(new Move.MajorMove(board,this,candidateDestinationCoordinate));
+                        legalMoves.add(new MajorMove(board,this,candidateDestinationCoordinate));
                     } else{
                         final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                         if (this.pieceAlliance != pieceAlliance){
-                            legalMoves.add(new Move.AttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
+                            legalMoves.add(new MajorAttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
                         }
                         break;
                     }
