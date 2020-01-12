@@ -42,8 +42,7 @@ public class GameHistoryPanel extends JPanel {
         if (moveLog.getMoves().size()>0){
             final Move lastMove = moveLog.getMoves().get(moveLog.size()-1);
             final String moveText = lastMove.toString();
-
-            if (lastMove.getMovedPiece().getPieceAlliance().isBlack()){
+            if (lastMove.getMovedPiece().getPieceAlliance().isWhite()){
                 this.model.setValueAt(moveText+calculateCheckAndCheckMateHash(board),currentRow,0);
             } else if (lastMove.getMovedPiece().getPieceAlliance().isBlack()){
                 this.model.setValueAt(moveText+calculateCheckAndCheckMateHash(board),currentRow-1,1);
