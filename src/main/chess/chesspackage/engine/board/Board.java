@@ -1,5 +1,6 @@
 package chesspackage.engine.board;
 
+import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import chesspackage.engine.Alliance;
@@ -7,6 +8,7 @@ import chesspackage.engine.pieces.*;
 import chesspackage.engine.player.BlackPlayer;
 import chesspackage.engine.player.Player;
 import chesspackage.engine.player.WhitePlayer;
+import com.google.errorprone.annotations.Immutable;
 
 import java.util.*;
 
@@ -151,6 +153,10 @@ public class Board {
 
     public Iterable<Move> getAllLegalMoves() {
         return Iterables.unmodifiableIterable(Iterables.concat(this.whitePlayer.getLegalMoves(),this.blackPlayer.getLegalMoves()));
+    }
+
+    public Iterable<Piece> getAllPieces() {
+        return Iterables.unmodifiableIterable(Iterables.concat(whitePieces,blackPieces));
     }
 
     public static class Builder {
