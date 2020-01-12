@@ -1,6 +1,7 @@
 package chesspackage.engine.player.ai;
 
 import chesspackage.engine.board.Board;
+import chesspackage.engine.board.BoardUtils;
 import chesspackage.engine.board.Move;
 import chesspackage.engine.player.MoveTransition;
 
@@ -38,9 +39,11 @@ public class MiniMax implements MoveStrategy {
                 if (board.currentPlayer().getAlliance().isWhite() && currentValue >= highestSeenValue){
                     highestSeenValue = currentValue;
                     bestMove = move;
+                    System.out.println(BoardUtils.getPositionAtCoordinate(move.getCurrentCoordinate()) + BoardUtils.getPositionAtCoordinate(move.getDestinationCoordinate()) + " gives " + currentValue);
                 } else if (board.currentPlayer().getAlliance().isBlack() && currentValue <= lowestSeenValue){
                     lowestSeenValue = currentValue;
                     bestMove = move;
+                    System.out.println(BoardUtils.getPositionAtCoordinate(move.getCurrentCoordinate()) + BoardUtils.getPositionAtCoordinate(move.getDestinationCoordinate()) + " gives " + currentValue);
                 }
             }
         }

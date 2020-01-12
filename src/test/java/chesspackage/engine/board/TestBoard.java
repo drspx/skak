@@ -75,13 +75,9 @@ public class TestBoard {
              BoardUtils.getCoordinateAtPosition("h4"));
 
      System.out.println(BoardUtils.getPositionAtCoordinate(aiMove2.destinationCoordinate));
-
      MoveTransition mt4 = mt3.getTransitionBoard().currentPlayer().makeMove(aiMove2);
-
      assertTrue(mt4.getMoveStatus().isDone());
-
      System.out.println(mt4.getTransitionBoard().toString());
-
      assertEquals(aiMove2,bestMove);
 
     }

@@ -6,12 +6,12 @@ import chesspackage.engine.player.Player;
 
 public final class StandardBoardEvaluator implements BoardEvaluator {
 
-    private static final int MOBILITY_FACTOR = 10;
-    private static final int PIECES_VALUE_FACTOR = 1;
+    private static final int MOBILITY_FACTOR = 2;
+    private static final int PIECES_VALUE_FACTOR = 10;
     private static final int CHECK_BONUS = 20;
-    private static final int CHECK_MATE_BONUS = 9000;
+    private static final int CHECK_MATE_BONUS = 10000;
     private static final int DEPTH_BONUS = 100;
-    private static final int CASTLE_BONUS = 50;
+    private static final int CASTLE_BONUS = 40;
 
     @Override
     public int evaluate(final Board board, final int depth) {
@@ -19,7 +19,8 @@ public final class StandardBoardEvaluator implements BoardEvaluator {
     }
 
     private int scorePlayer(final Board board, final Player player, final int depth) {
-        return pieceValue(player) + mobility(player) + check(player) + checkmate(player, depth) + castled(player);
+        int points = pieceValue(player) + mobility(player) + check(player) + checkmate(player, depth) + castled(player);
+        return points;
     }
 
     private int castled(Player player) {
