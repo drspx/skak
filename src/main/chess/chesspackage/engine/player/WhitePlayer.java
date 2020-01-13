@@ -21,7 +21,7 @@ public class WhitePlayer extends Player {
     }
 
     @Override
-    protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals,
+    public Collection<Move> calculateKingCastles(final Collection<Move> playerLegals,
                                                     final Collection<Move> opponentsLegals) {
         final List<Move> kingCastles = new ArrayList<>();
         if (this.playerKing.isFirstMove() && ! this.isInCheck()){
@@ -48,7 +48,7 @@ public class WhitePlayer extends Player {
                     rookTile.getPiece().getPieceType().isRook()){
                     kingCastles.add(new QueenSideCastleMove(this.board,
                                                             this.playerKing,
-                                                            8,
+                                                            58,
                                                             (Rook) rookTile.getPiece(),
                                                             rookTile.getTileCoordinate(),
                                                             59));

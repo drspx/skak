@@ -3,6 +3,7 @@ package chesspackage.gui;
 import chesspackage.engine.player.ai.MiniMax;
 import chesspackage.engine.player.ai.MoveStrategy;
 import chesspackage.pgn.FENUtilities;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import chesspackage.engine.board.Board;
 import chesspackage.engine.board.BoardUtils;
@@ -463,7 +464,8 @@ public class Table extends Observable {
 
         private void highlightLegals(final Board board){
             if (highlightLegalMoves){
-                for (final Move move : pieceLegalMoves(board)) {
+                Collection<Move> moves = pieceLegalMoves(board);
+                for (final Move move : moves) {
                     if (move.getDestinationCoordinate() == this.tileId){
                         try {
                             add(new JLabel(new ImageIcon(ImageIO.read(new File(GREEN_DOT)))));
@@ -477,7 +479,12 @@ public class Table extends Observable {
 
         private Collection<Move> pieceLegalMoves(final Board board){
             if (humanMovedPiece != null && humanMovedPiece.getPieceAlliance() == board.currentPlayer().getAlliance()){
-                return humanMovedPiece.calculateLegalMoves(board);
+                Collection<Move> moves = humanMovedPiece.calculateLegalMoves(board);
+                if (humanMovedPiece.getPieceType().isKing()){
+                    Collection<Move> castles = board.currentPlayer().calculateKingCastles(board.currentPlayer().getLegalMoves(),board.currentPlayer().getOpponent().getLegalMoves());
+                    return Lists.newArrayList(Iterables.concat(castles,moves));
+                }
+                return Collections.unmodifiableCollection(moves);
             }
             return Collections.emptyList();
         }
