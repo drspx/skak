@@ -21,11 +21,11 @@ public class Tui {
 
     public void run () {
         while (!board.whitePlayer().isCheckMate() || !board.whitePlayer().isInStaleMate() ||
-                !board.blackPlayer().isCheckMate() || !board.blackPlayer().isInStaleMate()){
+                !board.blackPlayer().isCheckMate() || !board.blackPlayer().isInStaleMate() ||
+                !board.currentPlayer().onlyGotKingLeft()){
             System.out.println(board.toString());
             System.out.println(board.currentPlayer().getAlliance() + " player, your move");
-            int randomInt = (int)(Math.random()*((5-1)+1))+1;
-            MoveTransition b = board.currentPlayer().makeMove(new MiniMax(randomInt).execute(board));
+            MoveTransition b = board.currentPlayer().makeMove(new MiniMax(2).execute(board));
             board=b.getTransitionBoard();
         }
     }
