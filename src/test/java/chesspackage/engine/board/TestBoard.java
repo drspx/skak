@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import chesspackage.engine.pieces.Piece;
 import chesspackage.engine.player.MoveStatus;
 import chesspackage.engine.player.MoveTransition;
+import chesspackage.engine.player.ai.AlphaBeta;
 import chesspackage.engine.player.ai.MiniMax;
 import chesspackage.engine.player.ai.MoveStrategy;
 import com.google.common.collect.Iterables;
@@ -44,45 +45,7 @@ public class TestBoard {
         }
     }
 
-    @Test
-    public void testFoolsMate() {
-        final Board board = Board.crateStandardBoard();
-        MoveTransition mt1 = board.currentPlayer()
-                .makeMove(Move.MoveFactory.createMove(
-                        board,BoardUtils.getCoordinateAtPosition("f2"),BoardUtils.getCoordinateAtPosition("f3")));
-        assertTrue(mt1.getMoveStatus().isDone());
-
-     System.out.println(mt1.getTransitionBoard().toString());
-
-     final MoveStrategy moveStrategy = new MiniMax(2);
-     final Move aiMove1 = moveStrategy.execute(mt1.getTransitionBoard());
-
-     MoveTransition mt2 = mt1.getTransitionBoard().currentPlayer()
-             .makeMove(aiMove1);
-     assertTrue(mt2.getMoveStatus().isDone());
-
-     System.out.println(mt2.getTransitionBoard().toString());
-
-     MoveTransition mt3 = mt2.getTransitionBoard().currentPlayer()
-             .makeMove(Move.MoveFactory.createMove(
-                     mt2.getTransitionBoard(),BoardUtils.getCoordinateAtPosition("g2"),BoardUtils.getCoordinateAtPosition("g4")));
-     assertTrue(mt3.getMoveStatus().isDone());
-
-     final Move aiMove2 = moveStrategy.execute(mt3.getTransitionBoard());
-
-     final Move bestMove = Move.MoveFactory.createMove(mt3.getTransitionBoard(),
-             BoardUtils.getCoordinateAtPosition("d8"),
-             BoardUtils.getCoordinateAtPosition("h4"));
-
-     System.out.println(BoardUtils.getPositionAtCoordinate(aiMove2.destinationCoordinate));
-     MoveTransition mt4 = mt3.getTransitionBoard().currentPlayer().makeMove(aiMove2);
-     assertTrue(mt4.getMoveStatus().isDone());
-     System.out.println(mt4.getTransitionBoard().toString());
-     assertEquals(aiMove2,bestMove);
-
-    }
 }
-
 /**
  * }
  * <p>

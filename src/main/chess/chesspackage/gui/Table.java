@@ -1,5 +1,7 @@
 package chesspackage.gui;
 
+import chesspackage.engine.player.ai.ABStock;
+import chesspackage.engine.player.ai.AlphaBeta;
 import chesspackage.engine.player.ai.MiniMax;
 import chesspackage.engine.player.ai.MoveStrategy;
 import chesspackage.pgn.FENUtilities;
@@ -159,6 +161,8 @@ public class Table extends Observable {
         });
         optionsMenu.add(restartGameItem);
 
+
+
         return optionsMenu;
     }
 
@@ -209,6 +213,7 @@ public class Table extends Observable {
 
         @Override
         protected Move doInBackground() throws Exception {
+            //final MoveStrategy strategy = new ABStock(4);
             final MoveStrategy strategy = new MiniMax(Table.get().gameSetup.getSearchDepth());
             final Move move = strategy.execute(Table.get().getChessBoard());
             return move;

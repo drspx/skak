@@ -28,7 +28,7 @@ public class MiniMax implements MoveStrategy {
         int highestSeenValue = Integer.MIN_VALUE;
         int lowestSeenValue = Integer.MAX_VALUE;
         int currentValue ;
-        System.out.println(board.currentPlayer() + "thinking with depth : " + depthSearch);
+//        System.out.println(board.currentPlayer() + "thinking with depth : " + depthSearch);
         int numMoves = board.currentPlayer().getLegalMoves().size();
         int counter = 0;
         for (final Move move : board.currentPlayer().getLegalMoves()) {
@@ -52,7 +52,7 @@ public class MiniMax implements MoveStrategy {
             }
         }
         final long executionTime = System.currentTimeMillis() - startTime;
-        System.out.println("time : "+((int)executionTime)/1000);
+//        System.out.println("time : "+executionTime);
         return bestMove;
     }
 
