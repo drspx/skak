@@ -51,7 +51,6 @@ public class GameHistoryPanel extends JPanel {
         final JScrollBar vertical = scrollPane.getVerticalScrollBar();
         vertical.setValue(vertical.getMaximum());
 
-
     }
 
     private String calculateCheckAndCheckMateHash(Board board) {

@@ -1,17 +1,16 @@
 package chesspackage.gui;
 
+import chesspackage.engine.board.BoardUtils;
 import com.google.common.primitives.Ints;
 import chesspackage.engine.board.Move;
 import chesspackage.engine.pieces.Piece;
 import chesspackage.gui.Table.MoveLog;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,7 +25,6 @@ public class TakenPiecesPanel extends JPanel {
     private static final Color PANEL_COLOR = Color.decode("0xFDFE6");
     private static final Border PANEL_BORDER = new EtchedBorder(EtchedBorder.RAISED);
     private static final Dimension TAKEN_PIECES_DIMENSION = new Dimension(40,80);
-    public static final String HOLY_WARRIORS = "art/holywarriors/";
 
     public TakenPiecesPanel(){
         super(new BorderLayout());
@@ -81,10 +79,7 @@ public class TakenPiecesPanel extends JPanel {
     private void takenPieces(List<Piece> takenPieces) {
         for (final Piece takenPiece : takenPieces){
             try {
-                final BufferedImage image = ImageIO.read(new File(new File(new File(Table.HOLY_WARRIORS
-                        + takenPiece.getPieceAlliance().toString().substring(0, 1))
-                        + takenPiece.toString())
-                        + ".gif"));
+                final BufferedImage image = GUIUtils.getPieceImages(takenPiece);
                 final ImageIcon icon = new ImageIcon(image);
                 final JLabel imageLabel = new JLabel(icon);
                 this.southPanel.add(imageLabel);

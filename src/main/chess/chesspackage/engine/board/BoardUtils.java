@@ -1,8 +1,16 @@
 package chesspackage.engine.board;
 
+import chesspackage.engine.pieces.Piece;
+import chesspackage.gui.Table;
 import com.google.common.collect.ImmutableMap;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 public class BoardUtils {
 
@@ -83,4 +91,5 @@ public class BoardUtils {
     public static String getPositionAtCoordinate(final int coordinate) {
         return ALGEBRAIC_NOTATION.get(coordinate);
     }
+
 }

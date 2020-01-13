@@ -56,8 +56,6 @@ public class Table extends Observable {
     private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
     private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
     private static final Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
-    public static final String HOLY_WARRIORS = "art/holywarriors/";
-    private static final String GREEN_DOT = "art/green_dot.png";
 
     private static final Table table = new Table();
 
@@ -71,7 +69,6 @@ public class Table extends Observable {
         this.chessBoard = Board.crateStandardBoard();
         this.gameHistoryPanel = new GameHistoryPanel();
         this.takenPiecesPanel = new TakenPiecesPanel();
-
         gameSetup = new GameSetup(this.gameFrame,true);
 
         this.boardPanel = new BoardPanel();
@@ -150,6 +147,17 @@ public class Table extends Observable {
             }
         });
         optionsMenu.add(saveGameMenuItem);
+
+        final JMenuItem restartGameItem = new JMenuItem("Restart");
+        restartGameItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                chessBoard = Board.crateStandardBoard();
+                Table.get().getTakenPiecesPanel().redo(new MoveLog());
+                Table.get().getBoardPanel().drawBoard(Table.get().getChessBoard());
+            }
+        });
+        optionsMenu.add(restartGameItem);
 
         return optionsMenu;
     }
@@ -446,14 +454,8 @@ public class Table extends Observable {
         private void assignTilePieceIcon(final Board board){
             this.removeAll();
             if (board.getTile(this.tileId).isTileOccupied()){
-
-                String pieceIconPath = HOLY_WARRIORS;
-
                 try {
-                    final BufferedImage image = ImageIO.read(new File(new File(new File(pieceIconPath
-                            + board.getTile(this.tileId).getPiece().getPieceAlliance().toString().substring(0, 1))
-                            + board.getTile(this.tileId).getPiece().toString())
-                            + ".gif"));
+                    final BufferedImage image = GUIUtils.getPieceImages(board.getTile(this.tileId).getPiece());
                     this.add(new JLabel(new ImageIcon(image)));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -468,7 +470,7 @@ public class Table extends Observable {
                 for (final Move move : moves) {
                     if (move.getDestinationCoordinate() == this.tileId){
                         try {
-                            add(new JLabel(new ImageIcon(ImageIO.read(new File(GREEN_DOT)))));
+                            add(GUIUtils.getGreenDot());
                         } catch (Exception e){
                             e.printStackTrace();
                         }
