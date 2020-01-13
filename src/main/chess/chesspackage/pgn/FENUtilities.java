@@ -26,6 +26,7 @@ public class FENUtilities {
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < BoardUtils.NUM_TILES; i++) {
             final String tileText = board.getTile(i).toString();
+            builder.append(tileText);
         }
         builder.insert(8,"/");
         builder.insert(17,"/");

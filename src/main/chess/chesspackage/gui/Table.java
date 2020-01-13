@@ -2,6 +2,7 @@ package chesspackage.gui;
 
 import chesspackage.engine.player.ai.MiniMax;
 import chesspackage.engine.player.ai.MoveStrategy;
+import chesspackage.pgn.FENUtilities;
 import com.google.common.collect.Lists;
 import chesspackage.engine.board.Board;
 import chesspackage.engine.board.BoardUtils;
@@ -139,6 +140,16 @@ public class Table extends Observable {
             }
         });
         optionsMenu.add(setupGameMenuItem);
+
+        final JMenuItem saveGameMenuItem = new JMenuItem("Save Game");
+        saveGameMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println(FENUtilities.createFENFromBoard(Table.get().getChessBoard()));
+            }
+        });
+        optionsMenu.add(saveGameMenuItem);
+
         return optionsMenu;
     }
 
