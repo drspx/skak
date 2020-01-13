@@ -4,6 +4,8 @@ import chesspackage.engine.board.Board;
 import chesspackage.engine.board.BoardUtils;
 import chesspackage.engine.board.Move;
 import chesspackage.engine.player.MoveTransition;
+import chesspackage.engine.player.ai.MiniMax;
+import chesspackage.engine.player.ai.MoveStrategy;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -18,23 +20,13 @@ public class Tui {
     }
 
     public void run () {
-        while (!board.whitePlayer().isCheckMate() || !board.whitePlayer().isInStaleMate() || !board.blackPlayer().isCheckMate() || !board.blackPlayer().isInStaleMate()){
+        while (!board.whitePlayer().isCheckMate() || !board.whitePlayer().isInStaleMate() ||
+                !board.blackPlayer().isCheckMate() || !board.blackPlayer().isInStaleMate()){
             System.out.println(board.toString());
             System.out.println(board.currentPlayer().getAlliance() + " player, your move");
-            try {
-                String moveString = bufferedReader.readLine();
-                if (isLegal(moveString)){
-                    int fromCoordinate = BoardUtils.getCoordinateAtPosition(moveString.substring(0,2));
-                    int toCoordinate = BoardUtils.getCoordinateAtPosition(moveString.substring(2,4));
-                    Move makeMove = Move.MoveFactory.createMove(this.board,fromCoordinate,toCoordinate);
-                    MoveTransition m = board.currentPlayer().makeMove(makeMove);
-                    this.board = m.getTransitionBoard();
-                } else {
-                    System.out.println("try again");
-                }
-            } catch (Exception e) {
-                System.out.println("try again");
-            }
+            int randomInt = (int)(Math.random()*((5-1)+1))+1;
+            MoveTransition b = board.currentPlayer().makeMove(new MiniMax(randomInt).execute(board));
+            board=b.getTransitionBoard();
         }
     }
 

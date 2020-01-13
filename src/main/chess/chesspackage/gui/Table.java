@@ -62,7 +62,7 @@ public class Table extends Observable {
 
 
     private Table(){
-        this.gameFrame=new JFrame("chesspackage.Chess");
+        this.gameFrame=new JFrame("Chess");
         this.gameFrame.setLayout(new BorderLayout());
         final JMenuBar tableMenuBar = createTableMenuBar();
         this.gameFrame.setJMenuBar(tableMenuBar);

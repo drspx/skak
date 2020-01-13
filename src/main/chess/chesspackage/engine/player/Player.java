@@ -119,4 +119,8 @@ public abstract class Player {
         return this.playerKing.isQueenSideCastleCapable();
 
     }
+    public boolean onlyGotKingLeft(){
+        return this.getActivePieces().size()==1 ;
+    }
+
 }

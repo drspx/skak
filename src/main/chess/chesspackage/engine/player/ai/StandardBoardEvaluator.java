@@ -1,17 +1,19 @@
 package chesspackage.engine.player.ai;
 
 import chesspackage.engine.board.Board;
+import chesspackage.engine.board.Move;
 import chesspackage.engine.pieces.Piece;
 import chesspackage.engine.player.Player;
 
 public final class StandardBoardEvaluator implements BoardEvaluator {
 
     private static final int MOBILITY_FACTOR = 2;
-    private static final int PIECES_VALUE_FACTOR = 10;
+    private static final int PIECES_VALUE_FACTOR = 1;
     private static final int CHECK_BONUS = 20;
     private static final int CHECK_MATE_BONUS = 10000;
     private static final int DEPTH_BONUS = 100;
     private static final int CASTLE_BONUS = 40;
+    private static final int ATTACK_MULTIPLIER = 2;
 
     @Override
     public int evaluate(final Board board, final int depth) {
@@ -19,8 +21,31 @@ public final class StandardBoardEvaluator implements BoardEvaluator {
     }
 
     private int scorePlayer(final Board board, final Player player, final int depth) {
-        int points = pieceValue(player) + mobility(player) + check(player) + checkmate(player, depth) + castled(player);
+        int points = pieceValue(player) +
+                mobility(player) +
+                checkmate(player, depth) +
+                castled(player) +
+                attacks(player) +
+                pawnStructure(player);
         return points;
+    }
+
+    private int pawnStructure(Player player) {
+        return 0;
+    }
+
+    private int attacks(Player player) {
+        int attackScore = 0;
+        for (final Move move : player.getLegalMoves()){
+            if (move.isAttack()){
+                final Piece movedPiece = move.getMovedPiece();
+                final Piece attackedPiece = move.getAttackedPiece();
+                if (movedPiece.getPieceValue()<=attackedPiece.getPieceValue()){
+                    attackScore++;
+                }
+            }
+        }
+        return attackScore * ATTACK_MULTIPLIER;
     }
 
     private int castled(Player player) {
