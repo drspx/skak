@@ -39,6 +39,8 @@ public class Table extends Observable {
 
     private Board chessBoard;
 
+    private Move computerMove;
+
     private Tile sourceTile;
     private Tile destinationTile;
     private Piece humanMovedPiece;
@@ -56,7 +58,6 @@ public class Table extends Observable {
     private static final String GREEN_DOT = "art/green_dot.png";
 
     private static final Table table = new Table();
-    private Move computerMove;
 
 
     private Table(){

@@ -17,11 +17,30 @@ public class King extends Piece{
 
     private final static int[] CANDIDATE_MOVE_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9 };
 
-    public King(final int piecePosition, final Alliance pieceAlliance) {
+    private final boolean kingSideCastleCapable;
+    private final boolean queenSideCastleCapable;
+    private final boolean isCastled;
+
+
+    public King(final int piecePosition,
+                final Alliance pieceAlliance,
+                final boolean kingSideCastleCapable,
+                final boolean queenSideCastleCapable) {
         super(PieceType.KING, piecePosition, pieceAlliance,true);
+        this.kingSideCastleCapable = kingSideCastleCapable;
+        this.queenSideCastleCapable = queenSideCastleCapable;
+        this.isCastled = false;
     }
-    public King(final int piecePosition, final Alliance pieceAlliance,final boolean isFirstMove) {
+    public King(final int piecePosition,
+                final Alliance pieceAlliance,
+                final boolean isFirstMove,
+                final boolean kingSideCastleCapable,
+                final boolean queenSideCastleCapable,
+                final boolean isCastled) {
         super(PieceType.KING, piecePosition, pieceAlliance,isFirstMove);
+        this.kingSideCastleCapable = kingSideCastleCapable;
+        this.queenSideCastleCapable=queenSideCastleCapable;
+        this.isCastled=isCastled;
     }
 
     @Override
@@ -56,7 +75,12 @@ public class King extends Piece{
 
     @Override
     public King movePiece(Move move) {
-        return new King(move.getDestinationCoordinate(),move.getMovedPiece().getPieceAlliance());
+        return new King(move.getDestinationCoordinate(),
+                move.getMovedPiece().getPieceAlliance(),
+                false,
+                move.isCastlingMove(),
+                false,
+                false);
     }
 
     @Override
@@ -70,5 +94,17 @@ public class King extends Piece{
 
     private static boolean isEigthColumnExclusion(final int currentPosition, final int candidateOffset){
         return BoardUtils.EIGTH_COLUMN[currentPosition] && (candidateOffset==-7||candidateOffset==1|| candidateOffset==9);
+    }
+
+    public boolean isKingSideCastleCapable() {
+        return this.kingSideCastleCapable;
+    }
+
+    public boolean isQueenSideCastleCapable() {
+        return this.queenSideCastleCapable;
+    }
+
+    public boolean isCastled() {
+        return isCastled;
     }
 }

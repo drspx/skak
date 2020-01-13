@@ -1,6 +1,5 @@
 package chesspackage;
 
-import chesspackage.engine.board.Board;
 import chesspackage.gui.Table;
 import chesspackage.tui.Tui;
 
