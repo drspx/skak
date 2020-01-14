@@ -16,7 +16,7 @@ public class AlphaBeta implements MoveStrategy {
 
     @Override
     public String toString() {
-        return "MiniMax";
+        return "AlphaBeta";
     }
 
     @Override
@@ -60,7 +60,6 @@ public class AlphaBeta implements MoveStrategy {
             }
             return currentAlpha;
         } else {
-            System.out.println("black "+ depth);
             int currentBeta = Integer.MAX_VALUE;
             for(Move child : currentNode.currentPlayer().getLegalMoves()) {
                 currentBeta = Math.min(currentBeta, miniMax(currentNode.currentPlayer().makeMove(child).getTransitionBoard(), depth - 1, alpha, beta));

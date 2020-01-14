@@ -12,12 +12,12 @@ import java.io.IOException;
 public class GUIUtils {
 
     public static final String HOLY_WARRIORS = "art/holywarriors/";
-
+    public static final String SIMPLE = "art/simple/";
 
     private static final String GREEN_DOT = "art/green_dot.png";
 
     public static BufferedImage getPieceImages(Piece takenPiece) throws IOException {
-        return ImageIO.read(new File(new File(new File(HOLY_WARRIORS
+        return ImageIO.read(new File(new File(new File(SIMPLE
                 + takenPiece.getPieceAlliance().toString().substring(0, 1))
                 + takenPiece.toString())
                 + ".gif"));
