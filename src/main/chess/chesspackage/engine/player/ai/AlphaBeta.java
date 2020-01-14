@@ -29,9 +29,7 @@ public class AlphaBeta implements MoveStrategy {
         for (final Move move : board.currentPlayer().getLegalMoves()) {
             final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
             if (moveTransition.getMoveStatus().isDone()) {
-                currentValue = board.currentPlayer().getAlliance().isWhite() ?
-                        min(moveTransition.getTransitionBoard(),depthSearch-1, highestSeenValue, lowestSeenValue) :
-                        max(moveTransition.getTransitionBoard(),depthSearch-1, highestSeenValue, lowestSeenValue);
+                currentValue = miniMax(moveTransition.getTransitionBoard(),depthSearch,highestSeenValue,lowestSeenValue);
                 if (board.currentPlayer().getAlliance().isWhite() && currentValue > highestSeenValue){
                     highestSeenValue = currentValue;
                     bestMove = move;
@@ -47,39 +45,32 @@ public class AlphaBeta implements MoveStrategy {
 
 
 
-    public int max(final Board board, final int depth, int highest, int lowest){
-        if (depth<=0 || endGame(board)){
-            return this.boardEvaluator.evaluate(board, depth);
+    private int miniMax(Board currentNode, int depth, int alpha, int beta) {
+        if (depth <= 0 || endGame(currentNode)){
+            return this.boardEvaluator.evaluate(currentNode, depth);
         }
-        int currentHighest = highest;
-        for (final Move move : board.currentPlayer().getLegalMoves()){
-            final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
-            if (moveTransition.getMoveStatus().isDone()){
-                currentHighest=Math.max(currentHighest,min(moveTransition.getTransitionBoard(), depth-1,currentHighest,lowest));
-                if (currentHighest>=lowest){
-                    return lowest;
+        if (currentNode.currentPlayer().getAlliance().isWhite()) {
+            int currentAlpha = Integer.MIN_VALUE;
+            for (Move child : currentNode.currentPlayer().getLegalMoves()) {
+                currentAlpha = Math.max(currentAlpha, miniMax(currentNode.currentPlayer().makeMove(child).getTransitionBoard(), depth - 1, alpha, beta));
+                alpha = Math.max(alpha, currentAlpha);
+                if (alpha >= beta) {
+                    return alpha;
                 }
             }
-        }
-        return currentHighest;
-    }
-
-
-    public int min(final Board board, final int depth, int highest, int lowest) {
-        if (depth<=0 || endGame(board)){
-            return this.boardEvaluator.evaluate(board, depth);
-        }
-        int currentLowest = lowest;
-        for (final Move move : board.currentPlayer().getLegalMoves()){
-            final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
-            if (moveTransition.getMoveStatus().isDone()){
-                currentLowest = Math.min(currentLowest,max(moveTransition.getTransitionBoard(), depth-1,highest,currentLowest));
-                if (currentLowest <= highest){
-                    return highest;
+            return currentAlpha;
+        } else {
+            System.out.println("black "+ depth);
+            int currentBeta = Integer.MAX_VALUE;
+            for(Move child : currentNode.currentPlayer().getLegalMoves()) {
+                currentBeta = Math.min(currentBeta, miniMax(currentNode.currentPlayer().makeMove(child).getTransitionBoard(), depth - 1, alpha, beta));
+                beta = Math.min(beta, currentBeta);
+                if (beta <= alpha) {
+                    return beta;
                 }
             }
+            return currentBeta;
         }
-        return currentLowest;
     }
 
     private boolean endGame(Board board) {

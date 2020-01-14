@@ -85,33 +85,37 @@ public class AITest {
     @Test
     public void speedTestAlphaBeta(){
 
-        long al = alpha();
-        long mi = mini();
-        long ab = ABS();
+        int depth = 3;
 
-        System.out.println("alpha took millis : " + al);
-        System.out.println("mini took millis : " + mi);
-        System.out.println("ABS took millis : " + ab);
+        long al = alpha(depth);
+        System.out.println(" alpha took millis : " + al);
+        long mi = mini(depth);
+        System.out.println(" mini took millis : " + mi );
+        long ab = ABS(depth);
+        System.out.println(" ABS took millis : " + ab );
 
     }
 
-    private long ABS() {
+    private long ABS(int i) {
         long currentTime = System.currentTimeMillis();
         Board board = Board.crateStandardBoard();
-        board.currentPlayer().makeMove(new ABStock(4).execute(board));
+        Move m = new ABStock(i).execute(board);
+        System.out.print(BoardUtils.getPositionAtCoordinate(m.getDestinationCoordinate()));
         return (System.currentTimeMillis()-currentTime);
     }
 
-    private long alpha() {
+    private long alpha(int i) {
         long currentTime = System.currentTimeMillis();
         Board board = Board.crateStandardBoard();
-        board.currentPlayer().makeMove(new AlphaBeta(4).execute(board));
+        Move m = new AlphaBeta(i).execute(board);
+        System.out.print(BoardUtils.getPositionAtCoordinate(m.getDestinationCoordinate()));
         return (System.currentTimeMillis()-currentTime);
     }
-    private long mini() {
+    private long mini(int i) {
         long currentTime = System.currentTimeMillis();
         Board board = Board.crateStandardBoard();
-        board.currentPlayer().makeMove(new MiniMax(4).execute(board));
+        Move m = new MiniMax(i).execute(board);
+        System.out.print(BoardUtils.getPositionAtCoordinate(m.getDestinationCoordinate()));
         return (System.currentTimeMillis()-currentTime);
     }
 
@@ -141,8 +145,8 @@ public class AITest {
     @Test
     public void AImatchMiniVsAlpha(){
         Board board = Board.crateStandardBoard();
-        MoveStrategy m = new MiniMax(2);
-        MoveStrategy a = new AlphaBeta(3);
+        MoveStrategy m = new MiniMax(1);
+        MoveStrategy a = new AlphaBeta(2);
         ArrayList<MoveTransition> mts = new ArrayList<>();
         mts.add(board.currentPlayer().makeMove(m.execute(board)));
         for (int i = 0; i < 10; i++) {
