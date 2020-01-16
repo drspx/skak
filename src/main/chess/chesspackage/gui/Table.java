@@ -22,8 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -37,7 +36,7 @@ public class Table extends Observable {
     private final GameHistoryPanel gameHistoryPanel;
     private final TakenPiecesPanel takenPiecesPanel;
     private final BoardPanel boardPanel;
-    private final MoveLog moveLog;
+    private MoveLog moveLog;
 
     private final GameSetup gameSetup;
 
@@ -86,6 +85,10 @@ public class Table extends Observable {
         this.gameFrame.setVisible(true);
 
     }
+    public void setMoveLog(MoveLog moveLog){
+        this.moveLog=moveLog;
+    }
+
     public static Table get(){
         return table;
     }
@@ -155,13 +158,30 @@ public class Table extends Observable {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 chessBoard = Board.crateStandardBoard();
-                Table.get().getTakenPiecesPanel().redo(new MoveLog());
-                Table.get().getBoardPanel().drawBoard(Table.get().getChessBoard());
+                Table.get().setMoveLog(new MoveLog());
+                Table.get().show();
             }
         });
         optionsMenu.add(restartGameItem);
 
-
+        final JMenuItem loadGameItem = new JMenuItem("load game");
+        loadGameItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                System.out.println("indtast FEN format her of tryk enter : ");
+                try{
+                    Reader input = new InputStreamReader(System.in);
+                    BufferedReader reader = new BufferedReader(input);
+                    Table.get().chessBoard = FENUtilities.createGameFromFEN(reader.readLine());
+                    System.out.println("spillet er loaded");
+                }  catch (Exception e){
+                    e.printStackTrace();
+                    System.out.println("prøv igen...");
+                }
+                Table.get().show();
+            }
+        });
+        optionsMenu.add(loadGameItem);
 
         return optionsMenu;
     }
@@ -213,9 +233,9 @@ public class Table extends Observable {
 
         @Override
         protected Move doInBackground() throws Exception {
-            //final MoveStrategy strategy = new ABStock(Table.get().gameSetup.getSearchDepth());
+            final MoveStrategy strategy = new ABStock(Table.get().gameSetup.getSearchDepth());
             //final MoveStrategy strategy = new MiniMax(Table.get().gameSetup.getSearchDepth());
-            final MoveStrategy strategy = new AlphaBeta(Table.get().gameSetup.getSearchDepth());
+            //final MoveStrategy strategy = new AlphaBeta(Table.get().gameSetup.getSearchDepth());
             final Move move = strategy.execute(Table.get().getChessBoard());
             return move;
         }

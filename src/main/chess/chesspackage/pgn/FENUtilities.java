@@ -11,10 +11,6 @@ public class FENUtilities {
         throw new RuntimeException("not instantiable");
     }
 
-    public static Board createBoardFromFEN(final String fenString){
-        return null;
-    }
-
     public static String createFENFromBoard(final Board board){
         return calculateBoardText(board) + " " +
                 calculateCurrentPlayerText(board) + " " +

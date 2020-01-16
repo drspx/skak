@@ -160,6 +160,43 @@ public class AITest {
 
     }
 
+    @Test
+    public void AISpeedTest(){
+
+        int searchDepth = 3;
+
+        Board board = Board.crateStandardBoard();
+
+        MoveStrategy strategy = new MiniMax(1);
+
+        ArrayList<MoveTransition> mts = new ArrayList<>();
+        mts.add(board.currentPlayer().makeMove(strategy.execute(board)));
+        for (int i = 0; i < 10; i++) {
+            mts.add(mts.get(mts.size()-1).getTransitionBoard().currentPlayer().makeMove(strategy.execute(mts.get(mts.size()-1).getTransitionBoard())));
+            mts.add(mts.get(mts.size()-1).getTransitionBoard().currentPlayer().makeMove(strategy.execute(mts.get(mts.size()-1).getTransitionBoard())));
+        }
+        Board evBoard = mts.get(mts.size()-1).getTransitionBoard();
+
+        MoveStrategy alphaBeta = new AlphaBeta(searchDepth);
+        MoveStrategy miniMax = new MiniMax(searchDepth);
+        MoveStrategy abStock = new ABStock(searchDepth);
+
+        long currentTime = System.currentTimeMillis();
+        alphaBeta.execute(evBoard);
+        System.out.println("alphaBeta takes : " + (System.currentTimeMillis()-currentTime));
+
+        currentTime = System.currentTimeMillis();
+        miniMax.execute(evBoard);
+        System.out.println("miniMax takes : " + (System.currentTimeMillis()-currentTime));
+
+        currentTime = System.currentTimeMillis();
+        abStock.execute(board);
+        System.out.println("abStock takes : " + (System.currentTimeMillis()-currentTime));
+
+
+
+    }
+
 
 
 }

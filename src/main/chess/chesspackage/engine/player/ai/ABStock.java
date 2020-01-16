@@ -8,6 +8,7 @@ import chesspackage.engine.player.Player;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Comparator;
 
@@ -15,7 +16,7 @@ public class ABStock implements MoveStrategy {
 
     private final BoardEvaluator evaluator;
     private final int searchDepth;
-    private long boardsEvaluated;
+    private int boardsEvaluated;
     private long executionTime;
     private int quiescenceCount;
     private static final int MAX_QUIESCENCE = 5000;
@@ -64,7 +65,10 @@ public class ABStock implements MoveStrategy {
         int highestSeenValue = Integer.MIN_VALUE;
         int lowestSeenValue = Integer.MAX_VALUE;
         int currentValue;
+        int amountOfMoves = board.currentPlayer().getLegalMoves().size();
+        int moveNr = 1;
         for (final Move move : board.currentPlayer().getLegalMoves()) {
+            System.out.println("analysing " + moveNr+++"/"+amountOfMoves);
             final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
             this.quiescenceCount = 0;
             final String s;
@@ -87,7 +91,7 @@ public class ABStock implements MoveStrategy {
                 }
             }
         }
-
+        System.out.println("analysed boards : " + boardsEvaluated);
         return bestMove;
     }
 
@@ -97,7 +101,7 @@ public class ABStock implements MoveStrategy {
                     final int highest,
                     final int lowest) {
         if (depth == 0 || endGame(board)) {
-            this.boardsEvaluated++;
+            this.boardsEvaluated += 1;
             return this.evaluator.evaluate(board, depth);
         }
         int currentHighest = highest;
