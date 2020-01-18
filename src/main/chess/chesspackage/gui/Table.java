@@ -233,9 +233,15 @@ public class Table extends Observable {
 
         @Override
         protected Move doInBackground() throws Exception {
-            final MoveStrategy strategy = new ABStock(Table.get().gameSetup.getSearchDepth());
-            //final MoveStrategy strategy = new MiniMax(Table.get().gameSetup.getSearchDepth());
-            //final MoveStrategy strategy = new AlphaBeta(Table.get().gameSetup.getSearchDepth());
+            MoveStrategy strategy ;
+            if (Table.get().getGameSetup().getAiType().equals(AiType.MINIMAX)) {
+                strategy = new MiniMax(Table.get().gameSetup.getSearchDepth());
+            } else if (Table.get().getGameSetup().getAiType().equals(AiType.ALPHABETA)){
+                strategy = new AlphaBeta(Table.get().gameSetup.getSearchDepth());
+            } else {
+                strategy = new ABStock(Table.get().gameSetup.getSearchDepth());
+            }
+            System.out.println(strategy.getClass().toString() + " selected");
             final Move move = strategy.execute(Table.get().getChessBoard());
             return move;
         }
@@ -393,6 +399,12 @@ public class Table extends Observable {
         COMPUTER
     }
 
+    enum AiType {
+        ABSTOCK,
+        ALPHABETA,
+        MINIMAX
+    }
+
 
     private class TilePanel extends JPanel{
         private final int tileId;
@@ -484,6 +496,7 @@ public class Table extends Observable {
                     final BufferedImage image = GUIUtils.getPieceImages(board.getTile(this.tileId).getPiece());
                     this.add(new JLabel(new ImageIcon(image)));
                 } catch (IOException e) {
+                    System.out.println(GUIUtils.SIMPLE);
                     e.printStackTrace();
                 }
             }

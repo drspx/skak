@@ -2,6 +2,8 @@ package chesspackage.gui;
 
 import chesspackage.engine.Alliance;
 import chesspackage.engine.player.Player;
+import chesspackage.engine.player.ai.ABStock;
+import chesspackage.gui.Table.AiType;
 import chesspackage.gui.Table.PlayerType;
 
 import javax.swing.*;
@@ -14,12 +16,12 @@ class GameSetup extends JDialog {
     private PlayerType whitePlayerType;
     private PlayerType blackPlayerType;
     private JSpinner searchDepthSpinner;
+    private AiType aiType;
 
     private static final String HUMAN_TEXT = "Human";
     private static final String COMPUTER_TEXT = "Computer";
 
-    GameSetup(final JFrame frame,
-              final boolean modal) {
+    GameSetup(final JFrame frame, final boolean modal) {
         super(frame, modal);
         final JPanel myPanel = new JPanel(new GridLayout(0, 1));
         final JRadioButton whiteHumanButton = new JRadioButton(HUMAN_TEXT);
@@ -45,8 +47,22 @@ class GameSetup extends JDialog {
         myPanel.add(blackHumanButton);
         myPanel.add(blackComputerButton);
 
+        final JRadioButton miniMax = new JRadioButton(AiType.MINIMAX.toString());
+        final JRadioButton abStock = new JRadioButton(AiType.ABSTOCK.toString());
+        final JRadioButton alphaBeta = new JRadioButton(AiType.ALPHABETA.toString());
+        final ButtonGroup aiGroup = new ButtonGroup();
+        aiGroup.add(miniMax);
+        aiGroup.add(alphaBeta);
+        aiGroup.add(abStock);
+        miniMax.setSelected(true);
+        myPanel.add(new JLabel("AI"));
+        myPanel.add(miniMax);
+        myPanel.add(alphaBeta);
+        myPanel.add(abStock);
+
+
         myPanel.add(new JLabel("Search"));
-        this.searchDepthSpinner = addLabeledSpinner(myPanel, "Search Depth", new SpinnerNumberModel(4, 0, Integer.MAX_VALUE, 1));
+        this.searchDepthSpinner = addLabeledSpinner(myPanel, "Search Depth", new SpinnerNumberModel(3, 0, Integer.MAX_VALUE, 1));
 
         final JButton cancelButton = new JButton("Cancel");
         final JButton okButton = new JButton("OK");
@@ -55,6 +71,13 @@ class GameSetup extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 whitePlayerType = whiteComputerButton.isSelected() ? PlayerType.COMPUTER : PlayerType.HUMAN;
                 blackPlayerType = blackComputerButton.isSelected() ? PlayerType.COMPUTER : PlayerType.HUMAN;
+                if (miniMax.isSelected()){
+                    aiType = AiType.MINIMAX;
+                } else if (alphaBeta.isSelected()){
+                    aiType = AiType.ALPHABETA;
+                } else {
+                    aiType = AiType.ABSTOCK;
+                }
                 GameSetup.this.setVisible(false);
             }
         });
@@ -107,5 +130,9 @@ class GameSetup extends JDialog {
 
     int getSearchDepth() {
         return (Integer) this.searchDepthSpinner.getValue();
+    }
+
+    public AiType getAiType() {
+        return this.aiType;
     }
 }

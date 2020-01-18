@@ -68,7 +68,6 @@ public class ABStock implements MoveStrategy {
         int amountOfMoves = board.currentPlayer().getLegalMoves().size();
         int moveNr = 1;
         for (final Move move : board.currentPlayer().getLegalMoves()) {
-            System.out.println("analysing " + moveNr+++"/"+amountOfMoves);
             final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
             this.quiescenceCount = 0;
             final String s;

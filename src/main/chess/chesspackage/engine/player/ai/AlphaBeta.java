@@ -73,7 +73,9 @@ public class AlphaBeta implements MoveStrategy {
     }
 
     private boolean endGame(Board board) {
-        return board.currentPlayer().isCheckMate() || board.currentPlayer().isInStaleMate() || board.currentPlayer().onlyGotKingLeft();
+        return board.currentPlayer().isCheckMate() ||
+                board.currentPlayer().isInStaleMate() ||
+                board.currentPlayer().onlyGotKingLeft();
     }
 
 }
