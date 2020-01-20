@@ -42,6 +42,8 @@ public class Table extends Observable {
 
     private Board chessBoard;
 
+    public ArrayList<Board> boardArrayList = new ArrayList<>();
+
     private Move computerMove;
 
     private Tile sourceTile;
@@ -134,7 +136,21 @@ public class Table extends Observable {
     private JMenu createOptionsMenu(){
         final JMenu optionsMenu = new JMenu("Options");
 
-        final JMenuItem setupGameMenuItem = new JMenuItem("Setup");
+        final JMenuItem undoMenuItem = new JMenuItem("undo");
+        undoMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (Table.get().boardArrayList.size()>2){
+                    Table.get().updateGameBoard(Table.get().boardArrayList.get(Table.get().boardArrayList.size()-2));
+                    Table.get().boardArrayList.remove(Table.get().boardArrayList.size()-1);
+                    Table.get().boardArrayList.remove(Table.get().boardArrayList.size()-1);
+                    Table.get().show();
+                }
+            }
+        });
+        optionsMenu.add(undoMenuItem);
+
+        final JMenuItem setupGameMenuItem = new JMenuItem("Set AI");
         setupGameMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -144,44 +160,25 @@ public class Table extends Observable {
         });
         optionsMenu.add(setupGameMenuItem);
 
-        final JMenuItem saveGameMenuItem = new JMenuItem("Save Game");
-        saveGameMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println(FENUtilities.createFENFromBoard(Table.get().getChessBoard()));
-            }
-        });
-        optionsMenu.add(saveGameMenuItem);
 
         final JMenuItem restartGameItem = new JMenuItem("Restart");
         restartGameItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                chessBoard = Board.crateStandardBoard();
-                Table.get().setMoveLog(new MoveLog());
-                Table.get().show();
+                Object[] options = { "yes", "no" };
+                int result = JOptionPane.showOptionDialog(Table.get().gameFrame, "would you really like to restart?", "restart?",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+                        null, options, null);
+
+                if (result==JOptionPane.YES_OPTION) {
+                    Table.get().updateGameBoard(Board.crateStandardBoard());
+                    Table.get().boardArrayList = new ArrayList<>();
+                    Table.get().setMoveLog(new MoveLog());
+                    Table.get().show();
+                }
             }
         });
         optionsMenu.add(restartGameItem);
-
-        final JMenuItem loadGameItem = new JMenuItem("load game");
-        loadGameItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println("indtast FEN format her of tryk enter : ");
-                try{
-                    Reader input = new InputStreamReader(System.in);
-                    BufferedReader reader = new BufferedReader(input);
-                    Table.get().chessBoard = FENUtilities.createGameFromFEN(reader.readLine());
-                    System.out.println("spillet er loaded");
-                }  catch (Exception e){
-                    e.printStackTrace();
-                    System.out.println("prøv igen...");
-                }
-                Table.get().show();
-            }
-        });
-        optionsMenu.add(loadGameItem);
 
         return optionsMenu;
     }
@@ -251,6 +248,7 @@ public class Table extends Observable {
             try {
                 final Move bestMove = get();
                 Table.get().updateComputerMove(bestMove);
+                Table.get().boardArrayList.add(Table.get().chessBoard);
                 Table.get().updateGameBoard(Table.get().getChessBoard().currentPlayer().makeMove(bestMove).getTransitionBoard());
                 Table.get().getMoveLog().addMove(bestMove);
                 Table.get().getGameHistoryPane().redo(Table.get().getChessBoard(), Table.get().getMoveLog());
@@ -293,14 +291,38 @@ public class Table extends Observable {
 
     private JMenu createFileMenu() {
         final JMenu fileMenu = new JMenu("File");
-        final JMenuItem openPGN = new JMenuItem("Load PGN File");
-        openPGN.addActionListener(new ActionListener() {
+
+        final JMenuItem loadGameItem = new JMenuItem("Load game");
+        loadGameItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                System.out.println("open pgn file");
+
+                try{
+                    String FENString = JOptionPane.showInputDialog(Table.get().gameFrame,"Type FEN-type string here");
+                    Table.get().chessBoard = FENUtilities.createGameFromFEN(FENString);
+                    System.out.println("loaded");
+                }  catch (Exception e){
+                    e.printStackTrace();
+                    System.out.println("not loaded");
+                }
+                Table.get().show();
             }
         });
-        fileMenu.add(openPGN);
+        fileMenu.add(loadGameItem);
+
+
+        final JMenuItem saveGameMenuItem = new JMenuItem("Save Game");
+        saveGameMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String FENString = FENUtilities.createFENFromBoard(Table.get().getChessBoard());
+                String FENStringMessage = "your game in FEN format is : \n" + FENString;
+                JOptionPane.showMessageDialog(Table.get().gameFrame,FENStringMessage);
+                System.out.println(FENString);
+            }
+        });
+        fileMenu.add(saveGameMenuItem);
+
         final JMenuItem exitMenuItem = new JMenuItem("exit");
         exitMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -435,6 +457,7 @@ public class Table extends Observable {
                             final Move move = Move.MoveFactory.createMove(chessBoard,sourceTile.getTileCoordinate(),destinationTile.getTileCoordinate());
                             final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                             if (transition.getMoveStatus().isDone()){
+                                Table.get().boardArrayList.add(Table.get().chessBoard);
                                 chessBoard = transition.getTransitionBoard();
                                 moveLog.addMove(move);
                             }
