@@ -13,6 +13,7 @@ import chesspackage.engine.board.Move;
 import chesspackage.engine.board.Tile;
 import chesspackage.engine.pieces.Piece;
 import chesspackage.engine.player.MoveTransition;
+import org.nd4j.shade.protobuf.Extension;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -72,7 +73,7 @@ public class Table extends Observable {
         this.chessBoard = Board.crateStandardBoard();
         this.gameHistoryPanel = new GameHistoryPanel();
         this.takenPiecesPanel = new TakenPiecesPanel();
-        gameSetup = new GameSetup(this.gameFrame,true);
+        gameSetup = new GameSetup(this.gameFrame,true, this);
 
         this.boardPanel = new BoardPanel();
         this.moveLog = new MoveLog();
@@ -230,14 +231,38 @@ public class Table extends Observable {
 
         @Override
         protected Move doInBackground() throws Exception {
-            MoveStrategy strategy ;
-            if (Table.get().getGameSetup().getAiType().equals(AiType.MINIMAX)) {
-                strategy = new MiniMax(Table.get().gameSetup.getSearchDepth());
-            } else if (Table.get().getGameSetup().getAiType().equals(AiType.ALPHABETA)){
-                strategy = new AlphaBeta(Table.get().gameSetup.getSearchDepth());
-            } else {
-                strategy = new ABStock(Table.get().gameSetup.getSearchDepth());
+            MoveStrategy strategy = new ABStock(3);
+            if (Table.get().getChessBoard().currentPlayer().getAlliance().isWhite()){
+                if (Table.get().getGameSetup().getWhiteAiType().equals(AiType.MINIMAX)){
+                    strategy = new MiniMax(Table.get().gameSetup.getWhiteSearchDepth());
+                }
+                if (Table.get().getGameSetup().getWhiteAiType().equals(AiType.ALPHABETA)){
+                    strategy = new AlphaBeta(Table.get().gameSetup.getWhiteSearchDepth());
+                }
+                if (Table.get().getGameSetup().getWhiteAiType().equals(AiType.ABSTOCK)){
+                    strategy = new ABStock(Table.get().gameSetup.getWhiteSearchDepth());
+                }
             }
+            if (Table.get().getChessBoard().currentPlayer().getAlliance().isBlack()){
+                if (Table.get().getGameSetup().getBlackAiType().equals(AiType.MINIMAX)){
+                    strategy = new MiniMax(Table.get().gameSetup.getBlackSearchDepth());
+                }
+                if (Table.get().getGameSetup().getBlackAiType().equals(AiType.ALPHABETA)){
+                    strategy = new AlphaBeta(Table.get().gameSetup.getBlackSearchDepth());
+                }
+                if (Table.get().getGameSetup().getBlackAiType().equals(AiType.ABSTOCK)){
+                    strategy = new ABStock(Table.get().gameSetup.getBlackSearchDepth());
+                }
+            }
+
+//            if (Table.get().getGameSetup().getAiType().equals(AiType.MINIMAX)) {
+//                strategy = new MiniMax(Table.get().gameSetup.getSearchDepth());
+//            } else if (Table.get().getGameSetup().getAiType().equals(AiType.ALPHABETA)){
+//                strategy = new AlphaBeta(Table.get().gameSetup.getSearchDepth());
+//            } else {
+//                strategy = new ABStock(Table.get().gameSetup.getSearchDepth());
+//            }
+
             System.out.println(strategy.getClass().toString() + " selected");
             final Move move = strategy.execute(Table.get().getChessBoard());
             return move;
@@ -247,6 +272,7 @@ public class Table extends Observable {
         protected void done() {
             try {
                 final Move bestMove = get();
+
                 Table.get().updateComputerMove(bestMove);
                 Table.get().boardArrayList.add(Table.get().chessBoard);
                 Table.get().updateGameBoard(Table.get().getChessBoard().currentPlayer().makeMove(bestMove).getTransitionBoard());
@@ -256,9 +282,7 @@ public class Table extends Observable {
                 Table.get().getBoardPanel().drawBoard(Table.get().getChessBoard());
                 Table.get().moveMadeUpdate(PlayerType.COMPUTER);
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -296,7 +320,6 @@ public class Table extends Observable {
         loadGameItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
                 try{
                     String FENString = JOptionPane.showInputDialog(Table.get().gameFrame,"Type FEN-type string here");
                     Table.get().chessBoard = FENUtilities.createGameFromFEN(FENString);
@@ -317,7 +340,8 @@ public class Table extends Observable {
             public void actionPerformed(ActionEvent actionEvent) {
                 String FENString = FENUtilities.createFENFromBoard(Table.get().getChessBoard());
                 String FENStringMessage = "your game in FEN format is : \n" + FENString;
-                JOptionPane.showMessageDialog(Table.get().gameFrame,FENStringMessage);
+                //JOptionPane.showMessageDialog(Table.get().gameFrame,FENStringMessage);
+                JOptionPane.showInputDialog(Table.get().gameFrame, FENStringMessage, FENStringMessage);
                 System.out.println(FENString);
             }
         });
