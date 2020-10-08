@@ -31,7 +31,9 @@ public class MiniMax implements MoveStrategy {
         int currentValue ;
 //        System.out.println(board.currentPlayer() + "thinking with depth : " + depthSearch);
         int numMoves = board.currentPlayer().getLegalMoves().size();
+        int moveindex = 1;
         for (final Move move : board.currentPlayer().getLegalMoves()) {
+            System.out.println(moveindex++ + "/" +numMoves);
             final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
             if (moveTransition.getMoveStatus().isDone()) {
                 ++counter;;
@@ -51,6 +53,8 @@ public class MiniMax implements MoveStrategy {
         }
         final long executionTime = System.currentTimeMillis() - startTime;
         System.out.println("boards evaluated : " + counter);
+        System.out.println("time:"+executionTime);
+        System.out.println();
         return bestMove;
     }
 
