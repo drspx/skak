@@ -10,7 +10,7 @@ public class AlphaBeta implements MoveStrategy {
     private final int depthSearch;
     private int boardsEvaluated = 0;
 
-    public AlphaBeta(final int depthSearch){
+    public AlphaBeta(final int depthSearch) {
         this.boardEvaluator = new StandardBoardEvaluator();
         this.depthSearch = depthSearch;
     }
@@ -26,34 +26,33 @@ public class AlphaBeta implements MoveStrategy {
         Move bestMove = null;
         int highestSeenValue = Integer.MIN_VALUE;
         int lowestSeenValue = Integer.MAX_VALUE;
-        int currentValue ;
+        int currentValue;
         int amountOfMoves = board.currentPlayer().getLegalMoves().size();
         int moveNr = 1;
         for (final Move move : board.currentPlayer().getLegalMoves()) {
             System.out.println(moveNr++ + "/" + amountOfMoves);
             final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
             if (moveTransition.getMoveStatus().isDone()) {
-                currentValue = miniMax(moveTransition.getTransitionBoard(),depthSearch,highestSeenValue,lowestSeenValue);
-                if (board.currentPlayer().getAlliance().isWhite() && currentValue > highestSeenValue){
+                currentValue = miniMax(moveTransition.getTransitionBoard(), depthSearch, highestSeenValue, lowestSeenValue);
+                if (board.currentPlayer().getAlliance().isWhite() && currentValue > highestSeenValue) {
                     highestSeenValue = currentValue;
                     bestMove = move;
-                } else if (board.currentPlayer().getAlliance().isBlack() && currentValue <= lowestSeenValue){
+                } else if (board.currentPlayer().getAlliance().isBlack() && currentValue <= lowestSeenValue) {
                     lowestSeenValue = currentValue;
                     bestMove = move;
                 }
             }
         }
         final long executionTime = System.currentTimeMillis() - startTime;
-        System.out.println("boards evaluated:"+boardsEvaluated);
+        System.out.println("boards evaluated:" + boardsEvaluated);
         System.out.println("time:" + executionTime);
         System.out.println();
         return bestMove;
     }
 
 
-
     private int miniMax(Board currentNode, int depth, int alpha, int beta) {
-        if (depth <= 0 || endGame(currentNode)){
+        if (depth <= 0 || endGame(currentNode)) {
             return this.boardEvaluator.evaluate(currentNode, depth);
         }
         if (currentNode.currentPlayer().getAlliance().isWhite()) {
@@ -69,7 +68,7 @@ public class AlphaBeta implements MoveStrategy {
             return currentAlpha;
         } else {
             int currentBeta = Integer.MAX_VALUE;
-            for(Move child : currentNode.currentPlayer().getLegalMoves()) {
+            for (Move child : currentNode.currentPlayer().getLegalMoves()) {
                 currentBeta = Math.min(currentBeta, miniMax(currentNode.currentPlayer().makeMove(child).getTransitionBoard(), depth - 1, alpha, beta));
                 beta = Math.min(beta, currentBeta);
                 this.boardsEvaluated++;

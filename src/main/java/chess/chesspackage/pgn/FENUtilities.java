@@ -7,11 +7,11 @@ import chess.chesspackage.engine.pieces.*;
 
 public class FENUtilities {
 
-    private FENUtilities(){
+    private FENUtilities() {
         throw new RuntimeException("not instantiable");
     }
 
-    public static String createFENFromBoard(final Board board){
+    public static String createFENFromBoard(final Board board) {
         return calculateBoardText(board) + " " +
                 calculateCurrentPlayerText(board) + " " +
                 calculateCastleText(board) + " " +
@@ -25,37 +25,38 @@ public class FENUtilities {
             final String tileText = board.getTile(i).toString();
             builder.append(tileText);
         }
-        builder.insert(8,"/");
-        builder.insert(17,"/");
-        builder.insert(26,"/");
-        builder.insert(35,"/");
-        builder.insert(44,"/");
-        builder.insert(53,"/");
-        builder.insert(62,"/");
+        builder.insert(8, "/");
+        builder.insert(17, "/");
+        builder.insert(26, "/");
+        builder.insert(35, "/");
+        builder.insert(44, "/");
+        builder.insert(53, "/");
+        builder.insert(62, "/");
 
         return builder.toString()
-                            .replaceAll("--------","8")
-                            .replaceAll("-------","7")
-                            .replaceAll("------","6")
-                            .replaceAll("-----","5")
-                            .replaceAll("----","4")
-                            .replaceAll("---","3")
-                            .replaceAll("--","2")
-                            .replaceAll("-","1");
+                .replaceAll("--------", "8")
+                .replaceAll("-------", "7")
+                .replaceAll("------", "6")
+                .replaceAll("-----", "5")
+                .replaceAll("----", "4")
+                .replaceAll("---", "3")
+                .replaceAll("--", "2")
+                .replaceAll("-", "1");
     }
 
     private static String calculateEnPassantSquare(Board board) {
         final Pawn enPassantPawn = board.getEnPassantPawn();
-        if (enPassantPawn==null){
+        if (enPassantPawn == null) {
             return "-";
         }
-        return BoardUtils.getPositionAtCoordinate((enPassantPawn.getPiecePosition()+8*enPassantPawn.getPieceAlliance().getOppositeDirection()));
+        return BoardUtils.getPositionAtCoordinate((enPassantPawn.getPiecePosition() + 8 * enPassantPawn.getPieceAlliance().getOppositeDirection()));
     }
 
 
     private static String calculateCurrentPlayerText(Board board) {
-        return board.currentPlayer().toString().substring(0,1).toLowerCase();
+        return board.currentPlayer().toString().substring(0, 1).toLowerCase();
     }
+
     public static Board createGameFromFEN(final String fenString) {
         return parseFEN(fenString);
     }
@@ -142,7 +143,7 @@ public class FENUtilities {
                     i++;
                     break;
                 default:
-                    throw new RuntimeException("Invalid FEN String " +gameConfiguration);
+                    throw new RuntimeException("Invalid FEN String " + gameConfiguration);
             }
         }
         builder.setMoveMaker(moveMaker(fenPartitions[1]));
@@ -150,12 +151,12 @@ public class FENUtilities {
     }
 
     private static Alliance moveMaker(final String moveMakerString) {
-        if(moveMakerString.equals("w")) {
+        if (moveMakerString.equals("w")) {
             return Alliance.WHITE;
-        } else if(moveMakerString.equals("b")) {
+        } else if (moveMakerString.equals("b")) {
             return Alliance.BLACK;
         }
-        throw new RuntimeException("Invalid FEN String " +moveMakerString);
+        throw new RuntimeException("Invalid FEN String " + moveMakerString);
     }
 
     private static boolean whiteKingSideCastle(final String fenCastleString) {
@@ -176,16 +177,16 @@ public class FENUtilities {
 
     private static String calculateCastleText(final Board board) {
         final StringBuilder builder = new StringBuilder();
-        if(board.whitePlayer().isKingSideCastleCapable()) {
+        if (board.whitePlayer().isKingSideCastleCapable()) {
             builder.append("K");
         }
-        if(board.whitePlayer().isQueenSideCastleCapable()) {
+        if (board.whitePlayer().isQueenSideCastleCapable()) {
             builder.append("Q");
         }
-        if(board.blackPlayer().isKingSideCastleCapable()) {
+        if (board.blackPlayer().isKingSideCastleCapable()) {
             builder.append("k");
         }
-        if(board.blackPlayer().isQueenSideCastleCapable()) {
+        if (board.blackPlayer().isQueenSideCastleCapable()) {
             builder.append("q");
         }
         final String result = builder.toString();

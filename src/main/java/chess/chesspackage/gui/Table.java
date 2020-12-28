@@ -359,7 +359,6 @@ public class Table extends Observable {
         fileMenu.add(saveJSONGameMenuItem);
 
 
-
         final JMenuItem exitMenuItem = new JMenuItem("exit");
         exitMenuItem.addActionListener(new ActionListener() {
             @Override

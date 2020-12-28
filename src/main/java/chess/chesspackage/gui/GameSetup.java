@@ -95,23 +95,23 @@ class GameSetup extends JDialog {
                 whitePlayerType = whiteHumanButton.isSelected() ? PlayerType.HUMAN : PlayerType.COMPUTER;
                 blackPlayerType = blackHumanButton.isSelected() ? PlayerType.HUMAN : PlayerType.COMPUTER;
 
-                if (whiteComputerMinimaxButton.isSelected()){
+                if (whiteComputerMinimaxButton.isSelected()) {
                     whiteAiType = AiType.MINIMAX;
                 }
-                if (whiteComputerABButton.isSelected()){
+                if (whiteComputerABButton.isSelected()) {
                     whiteAiType = AiType.ALPHABETA;
                 }
-                if (whiteComputerABStockButton.isSelected()){
+                if (whiteComputerABStockButton.isSelected()) {
                     whiteAiType = AiType.ABSTOCK;
                 }
 
-                if (blackComputerMinimaxButton.isSelected()){
+                if (blackComputerMinimaxButton.isSelected()) {
                     blackAiType = AiType.MINIMAX;
                 }
-                if (blackComputerABButton.isSelected()){
+                if (blackComputerABButton.isSelected()) {
                     blackAiType = AiType.ALPHABETA;
                 }
-                if (blackComputerABStockButton.isSelected()){
+                if (blackComputerABStockButton.isSelected()) {
                     blackAiType = AiType.ABSTOCK;
                 }
 

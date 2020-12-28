@@ -1,7 +1,6 @@
 package chess.chesspackage;
 
 import chess.chesspackage.gui.Table;
-import chess.chesspackage.tui.Tui;
 
 
 public class Chess {

@@ -17,7 +17,7 @@ public final class StandardBoardEvaluator implements BoardEvaluator {
 
     @Override
     public int evaluate(final Board board, final int depth) {
-        return scorePlayer(board, board.whitePlayer(), depth) - scorePlayer(board,board.blackPlayer(),depth);
+        return scorePlayer(board, board.whitePlayer(), depth) - scorePlayer(board, board.blackPlayer(), depth);
     }
 
     private int scorePlayer(final Board board, final Player player, final int depth) {
@@ -36,11 +36,11 @@ public final class StandardBoardEvaluator implements BoardEvaluator {
 
     private int attacks(Player player) {
         int attackScore = 0;
-        for (final Move move : player.getLegalMoves()){
-            if (move.isAttack()){
+        for (final Move move : player.getLegalMoves()) {
+            if (move.isAttack()) {
                 final Piece movedPiece = move.getMovedPiece();
                 final Piece attackedPiece = move.getAttackedPiece();
-                if (movedPiece.getPieceValue()<=attackedPiece.getPieceValue()){
+                if (movedPiece.getPieceValue() <= attackedPiece.getPieceValue()) {
                     attackScore++;
                 }
             }
@@ -53,11 +53,11 @@ public final class StandardBoardEvaluator implements BoardEvaluator {
     }
 
     private int checkmate(Player player, int depth) {
-        return player.getOpponent().isCheckMate() ? CHECK_MATE_BONUS*depthbonus(depth) : 0;
+        return player.getOpponent().isCheckMate() ? CHECK_MATE_BONUS * depthbonus(depth) : 0;
     }
 
     private int depthbonus(int depth) {
-        return depth==0 ? 1 : depth * DEPTH_BONUS;
+        return depth == 0 ? 1 : depth * DEPTH_BONUS;
     }
 
     private int check(Player player) {
@@ -65,17 +65,16 @@ public final class StandardBoardEvaluator implements BoardEvaluator {
     }
 
     private int mobility(Player player) {
-        return player.getLegalMoves().size()* MOBILITY_FACTOR;
+        return player.getLegalMoves().size() * MOBILITY_FACTOR;
     }
 
     private int pieceValue(final Player player) {
         int pieceValue = 0;
-        for (Piece piece : player.getActivePieces()){
+        for (Piece piece : player.getActivePieces()) {
             pieceValue += piece.getPieceValue();
         }
-        return pieceValue*PIECES_VALUE_FACTOR;
+        return pieceValue * PIECES_VALUE_FACTOR;
     }
-
 
 
 }

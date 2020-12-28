@@ -1,16 +1,8 @@
 package chess.chesspackage.engine.board;
 
-import chess.chesspackage.engine.pieces.Piece;
-import chess.chesspackage.gui.Table;
 import com.google.common.collect.ImmutableMap;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 public class BoardUtils {
 
@@ -29,7 +21,7 @@ public class BoardUtils {
     public static final boolean[] FIRST_RANK = initRow(56);
 
     private static final List<String> ALGEBRAIC_NOTATION = initializeAlgebraicNotation();
-    private static final Map<String,Integer> POSITION_TO_COORDINATE = initializePositionToCoordinateMap();
+    private static final Map<String, Integer> POSITION_TO_COORDINATE = initializePositionToCoordinateMap();
     private static final int START_TILE_INDEX = 0;
 
     private static List<String> initializeAlgebraicNotation() {
@@ -56,9 +48,9 @@ public class BoardUtils {
     private static boolean[] initRow(int rowNumber) {
         final boolean[] row = new boolean[NUM_TILES];
         do {
-            row[rowNumber]=true;
+            row[rowNumber] = true;
             rowNumber++;
-        } while (rowNumber % NUM_TILES_PER_ROW !=0 );
+        } while (rowNumber % NUM_TILES_PER_ROW != 0);
         return row;
     }
 
@@ -68,23 +60,23 @@ public class BoardUtils {
 
     private static boolean[] initColumn(int columnNumber) {
         final boolean[] column = new boolean[NUM_TILES];
-        do{
+        do {
             column[columnNumber] = true;
             columnNumber += NUM_TILES_PER_ROW;
-        } while (columnNumber<NUM_TILES);
+        } while (columnNumber < NUM_TILES);
         return column;
     }
 
 
-    private BoardUtils(){
+    private BoardUtils() {
         throw new RuntimeException("cannot be instantionated");
     }
 
     public static boolean isValidTileCoordinate(final int coordinate) {
-        return coordinate>=0 && coordinate<NUM_TILES;
+        return coordinate >= 0 && coordinate < NUM_TILES;
     }
 
-    public static int getCoordinateAtPosition(final String position){
+    public static int getCoordinateAtPosition(final String position) {
         return POSITION_TO_COORDINATE.get(position);
     }
 

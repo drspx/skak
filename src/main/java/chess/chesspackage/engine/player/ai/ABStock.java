@@ -1,14 +1,12 @@
 package chess.chesspackage.engine.player.ai;
 
 import chess.chesspackage.engine.board.Board;
-import chess.chesspackage.engine.board.BoardUtils;
 import chess.chesspackage.engine.board.Move;
 import chess.chesspackage.engine.player.MoveTransition;
 import chess.chesspackage.engine.player.Player;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Comparator;
 
@@ -40,7 +38,7 @@ public class ABStock implements MoveStrategy {
             }
         };
 
-        abstract  Collection<Move> sort(Collection<Move> moves);
+        abstract Collection<Move> sort(Collection<Move> moves);
     }
 
 
@@ -92,7 +90,7 @@ public class ABStock implements MoveStrategy {
             }
         }
         System.out.println("analysed boards : " + boardsEvaluated);
-        System.out.println("time:" + (System.currentTimeMillis()-startTime)/1000);
+        System.out.println("time:" + (System.currentTimeMillis() - startTime) / 1000);
         System.out.println();
         return bestMove;
     }
@@ -146,13 +144,13 @@ public class ABStock implements MoveStrategy {
 
     private int calculateQuiescenceDepth(final Board toBoard,
                                          final int depth) {
-        if(depth == 1 && this.quiescenceCount < MAX_QUIESCENCE) {
+        if (depth == 1 && this.quiescenceCount < MAX_QUIESCENCE) {
             int activityMeasure = 0;
             if (toBoard.currentPlayer().isInCheck()) {
                 activityMeasure += 1;
             }
 
-            if(activityMeasure >= 2) {
+            if (activityMeasure >= 2) {
                 this.quiescenceCount++;
                 return 1;
             }
@@ -163,8 +161,6 @@ public class ABStock implements MoveStrategy {
     private boolean endGame(Board board) {
         return board.currentPlayer().isCheckMate() || board.currentPlayer().isInStaleMate() || board.currentPlayer().onlyGotKingLeft();
     }
-
-
 
 
 }

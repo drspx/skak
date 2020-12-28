@@ -1,7 +1,7 @@
 package chess.chesspackage.engine.player;
 
 public enum MoveStatus {
-    DONE{
+    DONE {
         @Override
         public boolean isDone() {
             return true;

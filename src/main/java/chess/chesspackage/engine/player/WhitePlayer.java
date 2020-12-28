@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static chess.chesspackage.engine.board.Move.*;
+import static chess.chesspackage.engine.board.Move.KingSideCastleMove;
+import static chess.chesspackage.engine.board.Move.QueenSideCastleMove;
 
 public class WhitePlayer extends Player {
     public WhitePlayer(final Board board,
