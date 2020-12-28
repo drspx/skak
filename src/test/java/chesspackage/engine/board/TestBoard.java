@@ -2,12 +2,14 @@ package chesspackage.engine.board;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import chesspackage.engine.pieces.Piece;
-import chesspackage.engine.player.MoveStatus;
-import chesspackage.engine.player.MoveTransition;
-import chesspackage.engine.player.ai.AlphaBeta;
-import chesspackage.engine.player.ai.MiniMax;
-import chesspackage.engine.player.ai.MoveStrategy;
+import chess.chesspackage.engine.board.Board;
+import chess.chesspackage.engine.board.Move;
+import chess.chesspackage.engine.pieces.Piece;
+import chess.chesspackage.engine.player.MoveStatus;
+import chess.chesspackage.engine.player.MoveTransition;
+import chess.chesspackage.engine.player.ai.AlphaBeta;
+import chess.chesspackage.engine.player.ai.MiniMax;
+import chess.chesspackage.engine.player.ai.MoveStrategy;
 import com.google.common.collect.Iterables;
 import org.junit.jupiter.api.Test;
 

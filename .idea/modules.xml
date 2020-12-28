@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/untitledNN.iml" filepath="$PROJECT_DIR$/untitledNN.iml" />
+      <module fileurl="file://$PROJECT_DIR$/skak.iml" filepath="$PROJECT_DIR$/skak.iml" />
     </modules>
   </component>
 </project>

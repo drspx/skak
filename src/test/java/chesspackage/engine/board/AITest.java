@@ -1,7 +1,10 @@
 package chesspackage.engine.board;
 
-import chesspackage.engine.player.MoveTransition;
-import chesspackage.engine.player.ai.*;
+import chess.chesspackage.engine.board.Board;
+import chess.chesspackage.engine.board.BoardUtils;
+import chess.chesspackage.engine.board.Move;
+import chess.chesspackage.engine.player.MoveTransition;
+import chess.chesspackage.engine.player.ai.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ public class AITest {
         final Board board = Board.crateStandardBoard();
         MoveTransition mt1 = board.currentPlayer()
                 .makeMove(Move.MoveFactory.createMove(
-                        board,BoardUtils.getCoordinateAtPosition("f2"),BoardUtils.getCoordinateAtPosition("f3")));
+                        board, BoardUtils.getCoordinateAtPosition("f2"),BoardUtils.getCoordinateAtPosition("f3")));
         assertTrue(mt1.getMoveStatus().isDone());
 
         final MoveStrategy moveStrategy = new MiniMax(2);
@@ -37,7 +40,7 @@ public class AITest {
                 BoardUtils.getCoordinateAtPosition("d8"),
                 BoardUtils.getCoordinateAtPosition("h4"));
 
-        System.out.println(BoardUtils.getPositionAtCoordinate(aiMove2.destinationCoordinate));
+//        System.out.println(BoardUtils.getPositionAtCoordinate(aiMove2.destinationCoordinate));
         MoveTransition mt4 = mt3.getTransitionBoard().currentPlayer().makeMove(aiMove2);
         assertTrue(mt4.getMoveStatus().isDone());
 //        System.out.println(mt4.getTransitionBoard().toString());
@@ -74,7 +77,7 @@ public class AITest {
                 BoardUtils.getCoordinateAtPosition("d8"),
                 BoardUtils.getCoordinateAtPosition("h4"));
 
-        System.out.println(BoardUtils.getPositionAtCoordinate(aiMove2.destinationCoordinate));
+//        System.out.println(BoardUtils.getPositionAtCoordinate(aiMove2.destinationCoordinate));
         MoveTransition mt4 = mt3.getTransitionBoard().currentPlayer().makeMove(aiMove2);
         assertTrue(mt4.getMoveStatus().isDone());
         System.out.println(mt4.getTransitionBoard().toString());
