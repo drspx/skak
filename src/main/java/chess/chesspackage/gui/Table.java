@@ -13,6 +13,7 @@ import chess.chesspackage.engine.player.ai.MoveStrategy;
 import chess.chesspackage.pgn.FENUtilities;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
@@ -333,18 +334,31 @@ public class Table extends Observable {
         fileMenu.add(loadGameItem);
 
 
-        final JMenuItem saveGameMenuItem = new JMenuItem("Save Game");
-        saveGameMenuItem.addActionListener(new ActionListener() {
+        final JMenuItem saveFENGameMenuItem = new JMenuItem("Save FEN Game");
+        saveFENGameMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 String FENString = FENUtilities.createFENFromBoard(Table.get().getChessBoard());
-                String FENStringMessage = "your game in FEN format is : \n" + FENString;
-                //JOptionPane.showMessageDialog(Table.get().gameFrame,FENStringMessage);
-                JOptionPane.showInputDialog(Table.get().gameFrame, FENStringMessage, FENStringMessage);
                 System.out.println(FENString);
+                String FENStringMessage = "your game in FEN format is : ";
+                JOptionPane.showInputDialog(FENStringMessage, FENString);
             }
         });
-        fileMenu.add(saveGameMenuItem);
+        fileMenu.add(saveFENGameMenuItem);
+
+        final JMenuItem saveJSONGameMenuItem = new JMenuItem("Save JSON Game");
+        saveJSONGameMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String json = new Gson().toJson(Table.get().chessBoard.getGameBoard());
+                System.out.println(json);
+                String jsonMessage = "your game in JSON format is : ";
+                JOptionPane.showInputDialog(jsonMessage, json);
+            }
+        });
+        fileMenu.add(saveJSONGameMenuItem);
+
+
 
         final JMenuItem exitMenuItem = new JMenuItem("exit");
         exitMenuItem.addActionListener(new ActionListener() {

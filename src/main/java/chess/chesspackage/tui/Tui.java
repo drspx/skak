@@ -7,6 +7,7 @@ import chess.chesspackage.engine.player.MoveTransition;
 import chess.chesspackage.engine.player.ai.AlphaBeta;
 import chess.chesspackage.engine.player.ai.MiniMax;
 import chess.chesspackage.engine.player.ai.MoveStrategy;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

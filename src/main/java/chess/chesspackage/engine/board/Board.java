@@ -159,6 +159,10 @@ public class Board {
         return Iterables.unmodifiableIterable(Iterables.concat(whitePieces, blackPieces));
     }
 
+    public List<Tile> getGameBoard() {
+        return this.gameBoard;
+    }
+
     public static class Builder {
 
         Map<Integer, Piece> boardConfig;
