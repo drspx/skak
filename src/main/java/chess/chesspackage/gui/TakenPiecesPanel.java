@@ -77,10 +77,7 @@ public class TakenPiecesPanel extends JPanel {
 
     private void takenPieces(List<Piece> takenPieces) {
         for (final Piece takenPiece : takenPieces) {
-            final BufferedImage image = GUIUtils.getPieceImages(takenPiece);
-            final ImageIcon icon = new ImageIcon(image);
-            final JLabel imageLabel = new JLabel(icon);
-            this.southPanel.add(imageLabel);
+            this.southPanel.add(new JLabel(new ImageIcon(GUIUtils.getPieceImages(takenPiece))));
         }
     }
 }
