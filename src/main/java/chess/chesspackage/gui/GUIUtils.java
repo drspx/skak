@@ -6,39 +6,43 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
 public class GUIUtils {
 
-    public static final String HOLY_WARRIORS = "art/holywarriors/";
-    public static final String SIMPLE = "art/simple/";
+    public static final String HOLY_WARRIORS = "/art/holywarriors/";
+    public static final String SIMPLE = "/art/simple/";
 
-    private static final String GREEN_DOT = "art/green_dot.png";
+    private static final String GREEN_DOT = "/art/green_dot.png";
 
-    public static BufferedImage getPieceImages(Piece takenPiece) {
-        String path = SIMPLE;
+    private static GUIUtils utils;
 
-        path = path + takenPiece.getPieceAlliance().toString().charAt(0)
-                + takenPiece.toString() + ".gif";
+    public static GUIUtils getInstance() {
+        if (utils == null) {
+            utils = new GUIUtils();
+        }
+        return utils;
+    }
+
+    public BufferedImage getPieceImages(Piece takenPiece) {
+        String path = SIMPLE + takenPiece.getPieceAlliance().toString().charAt(0) + takenPiece.toString() + ".gif";
+
+        URL resource = this.getClass().getResource(path);
 
         BufferedImage read = null;
-
-        URL resource = ClassLoader.getSystemClassLoader().getResource(path);
-        String file = resource.getPath();
-
         try {
-            read = ImageIO.read(new File(file));
-        } catch (Exception e) {
-            e.printStackTrace();
+            read = ImageIO.read(resource);
+        } catch (IOException e) {
+            System.out.println("res failed");
         }
         return read;
     }
 
-    public static Component getGreenDot() throws IOException {
-        return new JLabel(new ImageIcon(ImageIO.read(new File(ClassLoader.getSystemResource(GREEN_DOT).getPath()))));
+    public Component getGreenDot() throws Exception {
+        URL resource = this.getClass().getResource(GREEN_DOT);
+        BufferedImage read = ImageIO.read(resource);
+        return new JLabel(new ImageIcon(read));
     }
-
 
 }

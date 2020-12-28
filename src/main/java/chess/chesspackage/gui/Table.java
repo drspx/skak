@@ -546,7 +546,7 @@ public class Table extends Observable {
         private void assignTilePieceIcon(final Board board) {
             this.removeAll();
             if (board.getTile(this.tileId).isTileOccupied()) {
-                final BufferedImage image = GUIUtils.getPieceImages(board.getTile(this.tileId).getPiece());
+                final BufferedImage image = GUIUtils.getInstance().getPieceImages(board.getTile(this.tileId).getPiece());
                 this.add(new JLabel(new ImageIcon(image)));
             }
         }
@@ -558,9 +558,9 @@ public class Table extends Observable {
                 for (final Move move : moves) {
                     if (move.getDestinationCoordinate() == this.tileId) {
                         try {
-                            add(GUIUtils.getGreenDot());
+                            add(GUIUtils.getInstance().getGreenDot());
                         } catch (Exception e) {
-                            e.printStackTrace();
+
                         }
                     }
                 }

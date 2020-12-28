@@ -77,7 +77,7 @@ public class TakenPiecesPanel extends JPanel {
 
     private void takenPieces(List<Piece> takenPieces) {
         for (final Piece takenPiece : takenPieces) {
-            this.southPanel.add(new JLabel(new ImageIcon(GUIUtils.getPieceImages(takenPiece))));
+            this.southPanel.add(new JLabel(new ImageIcon(GUIUtils.getInstance().getPieceImages(takenPiece))));
         }
     }
 }
