@@ -69,7 +69,6 @@ public class ABStock implements MoveStrategy {
             System.out.println(moveNr++ + "/" + amountOfMoves);
             final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
             this.quiescenceCount = 0;
-            final String s;
             if (moveTransition.getMoveStatus().isDone()) {
                 currentValue = currentPlayer.getAlliance().isWhite() ?
                         min(moveTransition.getTransitionBoard(), this.searchDepth - 1, highestSeenValue, lowestSeenValue) :
@@ -145,12 +144,7 @@ public class ABStock implements MoveStrategy {
     private int calculateQuiescenceDepth(final Board toBoard,
                                          final int depth) {
         if (depth == 1 && this.quiescenceCount < MAX_QUIESCENCE) {
-            int activityMeasure = 0;
             if (toBoard.currentPlayer().isInCheck()) {
-                activityMeasure += 1;
-            }
-
-            if (activityMeasure >= 2) {
                 this.quiescenceCount++;
                 return 1;
             }

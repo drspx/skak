@@ -37,10 +37,13 @@ public class AlphaBeta implements MoveStrategy {
                 if (board.currentPlayer().getAlliance().isWhite() && currentValue > highestSeenValue) {
                     highestSeenValue = currentValue;
                     bestMove = move;
-                } else if (board.currentPlayer().getAlliance().isBlack() && currentValue <= lowestSeenValue) {
+                } else if (board.currentPlayer().getAlliance().isBlack() && currentValue < lowestSeenValue) {
                     lowestSeenValue = currentValue;
                     bestMove = move;
                 }
+            }
+            if (bestMove == null && moveTransition.getMoveStatus().isDone()) {
+                bestMove = move;
             }
         }
         final long executionTime = System.currentTimeMillis() - startTime;
@@ -56,9 +59,9 @@ public class AlphaBeta implements MoveStrategy {
             return this.boardEvaluator.evaluate(currentNode, depth);
         }
         if (currentNode.currentPlayer().getAlliance().isWhite()) {
-            int currentAlpha = Integer.MIN_VALUE;
+            int currentAlpha = alpha;
             for (Move child : currentNode.currentPlayer().getLegalMoves()) {
-                currentAlpha = Math.max(currentAlpha, miniMax(currentNode.currentPlayer().makeMove(child).getTransitionBoard(), depth - 1, alpha, beta));
+                currentAlpha = Math.max(currentAlpha, miniMax(currentNode.currentPlayer().makeMove(child).getTransitionBoard(), depth - 1, currentAlpha, beta));
                 alpha = Math.max(alpha, currentAlpha);
                 this.boardsEvaluated++;
                 if (alpha >= beta) {
@@ -67,9 +70,9 @@ public class AlphaBeta implements MoveStrategy {
             }
             return currentAlpha;
         } else {
-            int currentBeta = Integer.MAX_VALUE;
+            int currentBeta = beta;
             for (Move child : currentNode.currentPlayer().getLegalMoves()) {
-                currentBeta = Math.min(currentBeta, miniMax(currentNode.currentPlayer().makeMove(child).getTransitionBoard(), depth - 1, alpha, beta));
+                currentBeta = Math.min(currentBeta, miniMax(currentNode.currentPlayer().makeMove(child).getTransitionBoard(), depth - 1, alpha, currentBeta));
                 beta = Math.min(beta, currentBeta);
                 this.boardsEvaluated++;
                 if (beta <= alpha) {

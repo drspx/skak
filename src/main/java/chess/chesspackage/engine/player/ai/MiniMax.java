@@ -68,7 +68,7 @@ public class MiniMax implements MoveStrategy {
             if (moveTransition.getMoveStatus().isDone()) {
                 counter++;
                 final int currentValue = max(moveTransition.getTransitionBoard(), depth - 1);
-                if (currentValue <= lowestSeenValue) {
+                if (currentValue < lowestSeenValue) {
                     lowestSeenValue = currentValue;
                 }
             }
@@ -90,7 +90,7 @@ public class MiniMax implements MoveStrategy {
             if (moveTransition.getMoveStatus().isDone()) {
                 counter++;
                 final int currentValue = min(moveTransition.getTransitionBoard(), depth - 1);
-                if (currentValue >= highestSeenValue) {
+                if (currentValue > highestSeenValue) {
                     highestSeenValue = currentValue;
                 }
             }
