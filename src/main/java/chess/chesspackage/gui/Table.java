@@ -10,6 +10,7 @@ import chess.chesspackage.engine.player.ai.ABStock;
 import chess.chesspackage.engine.player.ai.AlphaBeta;
 import chess.chesspackage.engine.player.ai.MiniMax;
 import chess.chesspackage.engine.player.ai.MoveStrategy;
+import chess.chesspackage.engine.player.ai.PositionalAI;
 import chess.chesspackage.pgn.FENUtilities;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -231,7 +232,7 @@ public class Table extends Observable {
 
         @Override
         protected Move doInBackground() throws Exception {
-            MoveStrategy strategy = new ABStock(3);
+            MoveStrategy strategy = new PositionalAI(3);
             if (Table.get().getChessBoard().currentPlayer().getAlliance().isWhite()) {
                 if (Table.get().getGameSetup().getWhiteAiType().equals(AiType.MINIMAX)) {
                     strategy = new MiniMax(Table.get().gameSetup.getWhiteSearchDepth());
@@ -241,6 +242,9 @@ public class Table extends Observable {
                 }
                 if (Table.get().getGameSetup().getWhiteAiType().equals(AiType.ABSTOCK)) {
                     strategy = new ABStock(Table.get().gameSetup.getWhiteSearchDepth());
+                }
+                if (Table.get().getGameSetup().getWhiteAiType().equals(AiType.POSITIONAL)) {
+                    strategy = new PositionalAI(Table.get().gameSetup.getWhiteSearchDepth());
                 }
             }
             if (Table.get().getChessBoard().currentPlayer().getAlliance().isBlack()) {
@@ -252,6 +256,9 @@ public class Table extends Observable {
                 }
                 if (Table.get().getGameSetup().getBlackAiType().equals(AiType.ABSTOCK)) {
                     strategy = new ABStock(Table.get().gameSetup.getBlackSearchDepth());
+                }
+                if (Table.get().getGameSetup().getBlackAiType().equals(AiType.POSITIONAL)) {
+                    strategy = new PositionalAI(Table.get().gameSetup.getBlackSearchDepth());
                 }
             }
 
@@ -467,7 +474,8 @@ public class Table extends Observable {
     enum AiType {
         ABSTOCK,
         ALPHABETA,
-        MINIMAX
+        MINIMAX,
+        POSITIONAL
     }
 
 

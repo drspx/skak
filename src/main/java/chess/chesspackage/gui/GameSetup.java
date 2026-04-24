@@ -25,6 +25,7 @@ class GameSetup extends JDialog {
     private static final String MINIMAX_TEXT = "Minimax";
     private static final String AB_TEXT = "Alpha Beta";
     private static final String AB_STOCK_TEXT = "Alpha Beta Improved";
+    private static final String POSITIONAL_TEXT = "Positional";
 
     GameSetup(final JFrame frame, final boolean modal, Table table) {
         super(frame, modal);
@@ -33,11 +34,13 @@ class GameSetup extends JDialog {
         final JRadioButton whiteComputerMinimaxButton = new JRadioButton(MINIMAX_TEXT);
         final JRadioButton whiteComputerABButton = new JRadioButton(AB_TEXT);
         final JRadioButton whiteComputerABStockButton = new JRadioButton(AB_STOCK_TEXT);
+        final JRadioButton whiteComputerPositionalButton = new JRadioButton(POSITIONAL_TEXT);
 
         final JRadioButton blackHumanButton = new JRadioButton(HUMAN_TEXT);
         final JRadioButton blackComputerMinimaxButton = new JRadioButton(MINIMAX_TEXT);
         final JRadioButton blackComputerABButton = new JRadioButton(AB_TEXT);
         final JRadioButton blackComputerABStockButton = new JRadioButton(AB_STOCK_TEXT);
+        final JRadioButton blackComputerPositionalButton = new JRadioButton(POSITIONAL_TEXT);
 
 
         //whiteHumanButton.setActionCommand(HUMAN_TEXT);
@@ -46,6 +49,7 @@ class GameSetup extends JDialog {
         whiteGroup.add(whiteComputerMinimaxButton);
         whiteGroup.add(whiteComputerABButton);
         whiteGroup.add(whiteComputerABStockButton);
+        whiteGroup.add(whiteComputerPositionalButton);
         whiteHumanButton.setSelected(true);
 
         final ButtonGroup blackGroup = new ButtonGroup();
@@ -53,6 +57,7 @@ class GameSetup extends JDialog {
         blackGroup.add(blackComputerMinimaxButton);
         blackGroup.add(blackComputerABButton);
         blackGroup.add(blackComputerABStockButton);
+        blackGroup.add(blackComputerPositionalButton);
         blackHumanButton.setSelected(true);
 
         getContentPane().add(myPanel);
@@ -61,6 +66,7 @@ class GameSetup extends JDialog {
         myPanel.add(whiteComputerMinimaxButton);
         myPanel.add(whiteComputerABButton);
         myPanel.add(whiteComputerABStockButton);
+        myPanel.add(whiteComputerPositionalButton);
         this.whiteSearchDepthSpinner = addLabeledSpinner(myPanel, "Search Depth", new SpinnerNumberModel(3, 0, Integer.MAX_VALUE, 1));
 
         myPanel.add(new JLabel("Black"));
@@ -68,6 +74,7 @@ class GameSetup extends JDialog {
         myPanel.add(blackComputerMinimaxButton);
         myPanel.add(blackComputerABButton);
         myPanel.add(blackComputerABStockButton);
+        myPanel.add(blackComputerPositionalButton);
         this.blackSearchDepthSpinner = addLabeledSpinner(myPanel, "Search Depth", new SpinnerNumberModel(3, 0, Integer.MAX_VALUE, 1));
 
 //        final JRadioButton miniMax = new JRadioButton(AiType.MINIMAX.toString());
@@ -104,6 +111,9 @@ class GameSetup extends JDialog {
                 if (whiteComputerABStockButton.isSelected()) {
                     whiteAiType = AiType.ABSTOCK;
                 }
+                if (whiteComputerPositionalButton.isSelected()) {
+                    whiteAiType = AiType.POSITIONAL;
+                }
 
                 if (blackComputerMinimaxButton.isSelected()) {
                     blackAiType = AiType.MINIMAX;
@@ -113,6 +123,9 @@ class GameSetup extends JDialog {
                 }
                 if (blackComputerABStockButton.isSelected()) {
                     blackAiType = AiType.ABSTOCK;
+                }
+                if (blackComputerPositionalButton.isSelected()) {
+                    blackAiType = AiType.POSITIONAL;
                 }
 
                 GameSetup.this.setVisible(false);

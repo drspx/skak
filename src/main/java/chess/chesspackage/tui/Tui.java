@@ -6,6 +6,7 @@ import chess.chesspackage.engine.board.Move;
 import chess.chesspackage.engine.player.MoveTransition;
 import chess.chesspackage.engine.player.ai.AlphaBeta;
 import chess.chesspackage.engine.player.ai.MiniMax;
+import chess.chesspackage.engine.player.ai.PositionalAI;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -25,9 +26,9 @@ public class Tui {
                 !board.currentPlayer().onlyGotKingLeft()) {
             System.out.println(board.toString());
             System.out.println(board.currentPlayer().getAlliance() + " player, your move");
-            MoveTransition b = board.currentPlayer().makeMove(new MiniMax(4).execute(board));
+            MoveTransition b = board.currentPlayer().makeMove(new PositionalAI(4).execute(board));
             board = b.getTransitionBoard();
-            MoveTransition a = board.currentPlayer().makeMove(new AlphaBeta(4).execute(board));
+            MoveTransition a = board.currentPlayer().makeMove(new PositionalAI(4).execute(board));
             board = a.getTransitionBoard();
         }
     }
